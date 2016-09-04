@@ -18,14 +18,16 @@ SOURCES += main.cpp\
     pose.cpp \
     tcpclient.cpp \
     robotsettings.cpp \
-    sidebar.cpp
+    sidebar.cpp \
+    tcpcommon.cpp
 
 HEADERS  += mainwindow.h \
     pose.h \
     tcpclient.h \
     robotsettings.h \
     sidebar.h \
-    sharetypes.h
+    sharetypes.h \
+    tcpcommon.h
 
 FORMS    += mainwindow.ui \
     robotsettings.ui \

@@ -2,7 +2,7 @@
 #define TCPCLIENT_H
 
 #include "pose.h"
-#include "sharetypes.h"
+#include "tcpcommon.h"
 
 #include <QDebug>
 
@@ -27,6 +27,7 @@ public:
     void disconnect_server();
     void download_table(dh_table& t);
     void get_current_pose(Pose& p);
+
 
 private:
     char msg[msg_size];

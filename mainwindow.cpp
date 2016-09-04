@@ -53,8 +53,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    if (cli.is_connected())
+        cli.disconnect_server();
     delete ui;
-
+    delete bar;
+    for (unsigned i = 0; i < NUMS_WGT; ++i)
+        delete widgets[i];
 }
 
 void MainWindow::show_sidebar(bool show)
@@ -147,6 +151,6 @@ void MainWindow::download_table()
     {
         dh_table t;
         cli.download_table(t);
-//        qDebug() << t[0].a;
+        qDebug() << t[0].a << t[1].d;
     }
 }

@@ -1,12 +1,5 @@
 #include "tcpclient.h"
 
-#include <cstring>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-
 TcpClient::TcpClient() : sockfd(-1)
 {
     memset(msg, 0x00, msg_size);
@@ -42,13 +35,13 @@ void TcpClient::connect_server(const char *address, int port)
         sockfd = -1;
         return;
     }
-
-//    int n;
-//    n = read(sockfd, msg, 100);
-//    if (n < 0)
-//         print("ERROR reading from socket");
-//    print(msg);
     print("connect to server successfully.");
+
+    std::string msg("load robot");
+    write(sockfd, msg);
+    read(sockfd, msg);
+    if (msg == "error on load robot")
+        print("ERROR on load robot");
     return;
 }
 
@@ -60,43 +53,23 @@ void TcpClient::disconnect_server()
 
 void TcpClient::download_table(dh_table &t)
 {
-//    print("download dh table");
-//    t.clear();
-//    strcpy(msg, "100");
-//    int n = write(sockfd, msg, sizeof(msg));
-//    if (n < 0)
-//    {
-//        print("ERROR on write msg");
-//    }
-//    dh_parametrs p;
-//    assert(sizeof(p) < buf_size);
-////    while (1)
-//    {
-//        print("while");
-//        n = read(sockfd, buf, sizeof(p));
-////        strncpy(msg, buf, 3);
-////        msg[3] = 0;
-////        if (strcmp(msg, "101") == 0)
-////        {
-////            print("end of download1");
-////            return;
-////        }
-//        memcpy(&p, buf, sizeof(p));
-////        t.push_back(p);
-//    }
-//    print("end of download");
-//    return;
+    std::string msg("download DH table");
+    write(sockfd, msg);
+    read(sockfd, msg);
+    if (msg == "success on download DH table")
+        read(sockfd, t);
+    return;
 }
 
 void TcpClient::get_current_pose(Pose &p)
 {
-    strcpy(msg, "get");
-    int n = write(sockfd, msg, sizeof(msg));
-    if (n < 0) {
-        print("ERROR on write msg");
-    }
-    assert(sizeof(p) < buf_size);
-    n = read(sockfd, buf, sizeof(p));
-    memcpy(&p, buf, sizeof(p));
+//    strcpy(msg, "get");
+//    int n = write(sockfd, msg, sizeof(msg));
+//    if (n < 0) {
+//        print("ERROR on write msg");
+//    }
+//    assert(sizeof(p) < buf_size);
+//    n = read(sockfd, buf, sizeof(p));
+//    memcpy(&p, buf, sizeof(p));
     return;
 }

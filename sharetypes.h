@@ -2,6 +2,7 @@
 #define SHARETYPES_H
 
 #include <vector>
+#include <string>
 
 /*
  * client respond code meaning
