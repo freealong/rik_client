@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     tcpclient.cpp \
     robotsettings.cpp \
     sidebar.cpp \
-    tcpcommon.cpp
+    tcpcommon.cpp \
+    visualize.cpp
 
 HEADERS  += mainwindow.h \
     pose.h \
@@ -27,8 +28,10 @@ HEADERS  += mainwindow.h \
     robotsettings.h \
     sidebar.h \
     sharetypes.h \
-    tcpcommon.h
+    tcpcommon.h \
+    visualize.h
 
 FORMS    += mainwindow.ui \
     robotsettings.ui \
-    sidebar.ui
+    sidebar.ui \
+    visualize.ui

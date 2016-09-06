@@ -35,11 +35,6 @@
    </column>
    <column>
     <property name="text">
-     <string>id</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
      <string>alpha</string>
     </property>
    </column>
@@ -65,7 +60,7 @@
      <x>580</x>
      <y>240</y>
      <width>60</width>
-     <height>41</height>
+     <height>40</height>
     </rect>
    </property>
    <property name="text">
@@ -83,6 +78,32 @@
    </property>
    <property name="text">
     <string>upload</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_add">
+   <property name="geometry">
+    <rect>
+     <x>580</x>
+     <y>0</y>
+     <width>60</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>add row</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_del">
+   <property name="geometry">
+    <rect>
+     <x>580</x>
+     <y>40</y>
+     <width>60</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>del row</string>
    </property>
   </widget>
  </widget>

@@ -30,11 +30,14 @@ signals:
     void sidebar_request(bool);
     void connect_request();
     void rbtsettings_request();
+    void visualize_request();
 
 private slots:
     void on_sidebar_button_clicked();
     void on_connect_button_clicked();
     void on_rbtsettings_botton_clicked();
+
+    void on_visualize_botton_clicked();
 
 private:
     Ui::SideBar *ui;

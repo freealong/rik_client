@@ -1,7 +1,6 @@
 #ifndef TCPCLIENT_H
 #define TCPCLIENT_H
 
-#include "pose.h"
 #include "tcpcommon.h"
 
 #include <QDebug>
@@ -25,8 +24,11 @@ public:
 
     void connect_server(const char* address, int port);
     void disconnect_server();
-    void download_table(dh_table& t);
-    void get_current_pose(Pose& p);
+    int download_table(dh_table& t);
+    int upload_table(dh_table& t);
+    int get_current_pose(Eigen::VectorXf &v);
+    int get_current_joints(Eigen::VectorXf &v);
+    void test();
 
 
 private:

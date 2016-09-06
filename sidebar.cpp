@@ -28,3 +28,8 @@ void SideBar::on_rbtsettings_botton_clicked()
 {
     emit rbtsettings_request();
 }
+
+void SideBar::on_visualize_botton_clicked()
+{
+    emit visualize_request();
+}

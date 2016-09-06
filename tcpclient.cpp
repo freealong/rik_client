@@ -51,25 +51,53 @@ void TcpClient::disconnect_server()
     sockfd = -1;
 }
 
-void TcpClient::download_table(dh_table &t)
+int TcpClient::download_table(dh_table &t)
 {
+    if (sockfd == -1)
+        return -1;
     std::string msg("download DH table");
     write(sockfd, msg);
     read(sockfd, msg);
-    if (msg == "success on download DH table")
+    if (msg == "ready on download DH table")
         read(sockfd, t);
-    return;
+    return 0;
 }
 
-void TcpClient::get_current_pose(Pose &p)
+int TcpClient::upload_table(dh_table &t)
 {
-//    strcpy(msg, "get");
-//    int n = write(sockfd, msg, sizeof(msg));
-//    if (n < 0) {
-//        print("ERROR on write msg");
-//    }
-//    assert(sizeof(p) < buf_size);
-//    n = read(sockfd, buf, sizeof(p));
-//    memcpy(&p, buf, sizeof(p));
-    return;
+    if (sockfd == -1)
+        return -1;
+    std::string msg("upload DH table");
+    write(sockfd, msg);
+    write(sockfd, t);
+    return 0;
+}
+
+int TcpClient::get_current_pose(Eigen::VectorXf &v)
+{
+    if (sockfd == -1)
+        return -1;
+    std::string msg("get current pose");
+    write(sockfd, msg);
+    read(sockfd, v);
+    return 0;
+}
+
+int TcpClient::get_current_joints(Eigen::VectorXf &v)
+{
+    if (sockfd == -1)
+        return -1;
+    std::string msg("get current joints");
+    write(sockfd, msg);
+    read(sockfd, v);
+    return 0;
+}
+
+void TcpClient::test()
+{
+    std::string msg("test");
+    write(sockfd, msg);
+    Eigen::VectorXf des;
+    read(sockfd, des);
+    qDebug() << des(5);
 }

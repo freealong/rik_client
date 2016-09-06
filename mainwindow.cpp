@@ -14,7 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     widgets[CONNECT_WGT] = ui->centralWidget;
     widgets[RBTSETTINGS_WGT] = new RobotSettings(this);
+    widgets[VISUALIZE_WGT] = new Visualize(this);
     bar = new SideBar(this);
+    poseTimer = new QTimer;
+    jointsTimer = new QTimer;
 
     // set up background color;
     QPalette pal;
@@ -26,6 +29,10 @@ MainWindow::MainWindow(QWidget *parent) :
 //    pal.setColor(QPalette::Background, Qt::yellow);
     widgets[RBTSETTINGS_WGT]->setPalette(pal);
 
+    widgets[VISUALIZE_WGT]->setAutoFillBackground(true);
+//    pal.setColor(QPalette::Background, Qt::yellow);
+    widgets[VISUALIZE_WGT]->setPalette(pal);
+
     bar->setAutoFillBackground(true);
 //    pal.setColor(QPalette::Background, Qt::black);
     bar->setPalette(pal);
@@ -34,15 +41,24 @@ MainWindow::MainWindow(QWidget *parent) :
     currentWidget = widgets[CONNECT_WGT];
 
     widgets[RBTSETTINGS_WGT]->move(0, - widgets[RBTSETTINGS_WGT]->height());
+    widgets[VISUALIZE_WGT]->move(0, - widgets[VISUALIZE_WGT]->height());
     bar->move(margin_x - bar->width(), 0);
     bar->setStatus(false);
 
-    //
+    // connect sidebar and other widgets
     connect(bar, &SideBar::connect_request, this, &MainWindow::show_connect);
     connect(bar, &SideBar::sidebar_request, this, &MainWindow::show_sidebar);
     connect(bar, &SideBar::rbtsettings_request, this, &MainWindow::show_rbtsettings);
+    connect(bar, &SideBar::visualize_request, this, &MainWindow::show_visualize);
 
-    connect((RobotSettings*)widgets[RBTSETTINGS_WGT], &RobotSettings::table_request, this, &MainWindow::download_table);
+    // connect this and robotsettings
+    connect((RobotSettings*)widgets[RBTSETTINGS_WGT], &RobotSettings::download_request, this, &MainWindow::download_table);
+    connect((RobotSettings*)widgets[RBTSETTINGS_WGT], &RobotSettings::upload_request, this, &MainWindow::upload_table);
+    // connect this and visualize
+    connect(poseTimer, SIGNAL(timeout()), this, SLOT(update_pose()));
+    connect((Visualize*)widgets[VISUALIZE_WGT], &Visualize::pose_request, this, &MainWindow::start_get_pose);
+    connect(jointsTimer, SIGNAL(timeout()), this, SLOT(update_joints()));
+    connect((Visualize*)widgets[VISUALIZE_WGT], &Visualize::joints_request, this, &MainWindow::start_get_joints);
 
 //    ui->tableWidget->setColumnCount(6);
 //    ui->tableWidget->setRowCount(6);
@@ -111,15 +127,15 @@ void MainWindow::show_rbtsettings()
     bar->setFocus();
 }
 
-//void MainWindow::on_pushButton_clicked()
-//{
-//    cli.connect_server("10.0.0.110", 8887);
-//    Pose cur_pos;
-//    cli.get_current_pose(cur_pos);
-//    std::cout << cur_pos;
-//}
-
-
+void MainWindow::show_visualize()
+{
+    if (currentWidget == widgets[VISUALIZE_WGT])
+        return;
+    currentWidget->move(0, -currentWidget->height());
+    widgets[VISUALIZE_WGT]->move(0, 0);
+    currentWidget = widgets[VISUALIZE_WGT];
+    bar->setFocus();
+}
 
 void MainWindow::on_button_connect_clicked()
 {
@@ -151,6 +167,61 @@ void MainWindow::download_table()
     {
         dh_table t;
         cli.download_table(t);
-        qDebug() << t[0].a << t[1].d;
+        RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
+        rbt->set_table(t);
     }
+}
+
+void MainWindow::upload_table()
+{
+    if (cli.is_connected())
+    {
+        dh_table t;
+        RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
+        rbt->get_table(t);
+        cli.upload_table(t);
+    }
+}
+
+void MainWindow::start_get_pose(bool isShow)
+{
+    if (isShow)
+        poseTimer->start(100);
+    else
+        poseTimer->stop();
+}
+
+void MainWindow::start_get_joints(bool isShow)
+{
+    if (isShow)
+        jointsTimer->start(100);
+    else
+        jointsTimer->stop();
+}
+
+void MainWindow::update_pose()
+{
+    if (cli.is_connected())
+    {
+        Eigen::VectorXf v;
+        cli.get_current_pose(v);
+        Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
+        vlz->update_pose(v);
+    }
+}
+
+void MainWindow::update_joints()
+{
+    if (cli.is_connected())
+    {
+        Eigen::VectorXf v;
+        cli.get_current_joints(v);
+        Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
+        vlz->update_joints(v);
+    }
+}
+
+void MainWindow::on_button_test_clicked()
+{
+    cli.test();
 }
