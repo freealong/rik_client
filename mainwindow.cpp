@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    pal.setColor(QPalette::Background, Qt::yellow);
     widgets[VISUALIZE_WGT]->setPalette(pal);
 
-    bar->setAutoFillBackground(true);
+//    bar->setAutoFillBackground(true);
 //    pal.setColor(QPalette::Background, Qt::black);
     bar->setPalette(pal);
 
@@ -159,16 +159,21 @@ void MainWindow::on_button_connect_clicked()
         else
             ui->label->setText("Error on connecting***");
     }
+    if (cli.is_connected())
+    {
+        download_table();
+    }
 }
 
 void MainWindow::download_table()
 {
     if (cli.is_connected())
     {
-        dh_table t;
-        cli.download_table(t);
         RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
-        rbt->set_table(t);
+        cli.download_table(rbt->rbt_table);
+        rbt->set_table(rbt->rbt_table);
+        Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
+        vlz->update_joints_widget(rbt->rbt_table);
     }
 }
 
@@ -176,10 +181,11 @@ void MainWindow::upload_table()
 {
     if (cli.is_connected())
     {
-        dh_table t;
         RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
-        rbt->get_table(t);
-        cli.upload_table(t);
+        rbt->get_table(rbt->rbt_table);
+        cli.upload_table(rbt->rbt_table);
+        Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
+        vlz->update_joints_widget(rbt->rbt_table);
     }
 }
 
@@ -225,3 +231,4 @@ void MainWindow::on_button_test_clicked()
 {
     cli.test();
 }
+

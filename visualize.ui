@@ -13,59 +13,188 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="button_pose">
-   <property name="geometry">
-    <rect>
-     <x>510</x>
-     <y>260</y>
-     <width>131</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>show current pose</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="button_joints">
-   <property name="geometry">
-    <rect>
-     <x>510</x>
-     <y>290</y>
-     <width>131</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>show current joints</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_pose">
+  <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
      <y>0</y>
-     <width>600</width>
-     <height>20</height>
+     <width>611</width>
+     <height>321</height>
     </rect>
    </property>
-   <property name="text">
-    <string>pose: </string>
+   <property name="currentIndex">
+    <number>0</number>
    </property>
-  </widget>
-  <widget class="QLabel" name="label_joints">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>20</y>
-     <width>600</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>joints: </string>
-   </property>
+   <widget class="QWidget" name="tab_pose">
+    <attribute name="title">
+     <string>Pose</string>
+    </attribute>
+    <widget class="QCustomPlot" name="widget_pose" native="true">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>521</width>
+       <height>261</height>
+      </rect>
+     </property>
+     <widget class="QListView" name="listView">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>-20</y>
+        <width>81</width>
+        <height>171</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="label_pose">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>591</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>pose: </string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_pose">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>260</y>
+       <width>61</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>show</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="list_pose">
+     <property name="geometry">
+      <rect>
+       <x>530</x>
+       <y>30</y>
+       <width>71</width>
+       <height>192</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>x</string>
+      </property>
+      <property name="checkState">
+       <enum>Checked</enum>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>y</string>
+      </property>
+      <property name="checkState">
+       <enum>Checked</enum>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>z</string>
+      </property>
+      <property name="checkState">
+       <enum>Checked</enum>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>a</string>
+      </property>
+      <property name="checkState">
+       <enum>Unchecked</enum>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>b</string>
+      </property>
+      <property name="checkState">
+       <enum>Unchecked</enum>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>c</string>
+      </property>
+      <property name="checkState">
+       <enum>Unchecked</enum>
+      </property>
+     </item>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_joints">
+    <attribute name="title">
+     <string>Joints</string>
+    </attribute>
+    <widget class="QCustomPlot" name="widget_joints" native="true">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>521</width>
+       <height>261</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_joints">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>581</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>joints: </string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_joints">
+     <property name="geometry">
+      <rect>
+       <x>540</x>
+       <y>260</y>
+       <width>61</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>show</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="list_joints">
+     <property name="geometry">
+      <rect>
+       <x>530</x>
+       <y>30</y>
+       <width>71</width>
+       <height>192</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = RIK_Client
 TEMPLATE = app
@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     robotsettings.cpp \
     sidebar.cpp \
     tcpcommon.cpp \
-    visualize.cpp
+    visualize.cpp \
+    qcustomplot.cpp
 
 HEADERS  += mainwindow.h \
     pose.h \
@@ -29,7 +30,8 @@ HEADERS  += mainwindow.h \
     sidebar.h \
     sharetypes.h \
     tcpcommon.h \
-    visualize.h
+    visualize.h \
+    qcustomplot.h
 
 FORMS    += mainwindow.ui \
     robotsettings.ui \

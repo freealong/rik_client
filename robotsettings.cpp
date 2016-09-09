@@ -15,6 +15,7 @@ RobotSettings::~RobotSettings()
 
 void RobotSettings::set_table(dh_table &t)
 {
+    // set table in table widget
     if (t.size() > 0)
         ui->tableWidget->setRowCount(t.size());
     for (unsigned i = 0; i < t.size(); ++i)
@@ -39,6 +40,7 @@ void RobotSettings::set_table(dh_table &t)
 
 void RobotSettings::get_table(dh_table &t)
 {
+    // get table from table widget
     t.clear();
     dh_parametrs p;
     for (int i = 0; i < ui->tableWidget->rowCount(); i++)

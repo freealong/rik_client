@@ -18,6 +18,7 @@ public:
     ~RobotSettings();
     void set_table(dh_table &t);
     void get_table(dh_table &t);
+    dh_table rbt_table;
 
 signals:
     void download_request();

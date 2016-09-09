@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <Eigen>
 
+#include "qcustomplot.h"
+#include "sharetypes.h"
+
 namespace Ui {
 class Visualize;
 }
@@ -18,6 +21,7 @@ public:
 
     void update_pose(Eigen::VectorXf &v);
     void update_joints(Eigen::VectorXf &v);
+    void update_joints_widget(dh_table& t);
 
 signals:
     void pose_request(bool);
@@ -30,8 +34,11 @@ private slots:
 
 private:
     Ui::Visualize *ui;
+    QCustomPlot* plot_pose;
+    QCustomPlot* plot_joints;
     bool show_pose;
     bool show_joints;
+
 };
 
 #endif // VISUALIZE_H
