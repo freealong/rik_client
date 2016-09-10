@@ -1,7 +1,7 @@
 #ifndef VISUALIZE_H
 #define VISUALIZE_H
 
-#include <QWidget>
+#include <mywidget.h>
 #include <Eigen>
 
 #include "qcustomplot.h"
@@ -11,7 +11,7 @@ namespace Ui {
 class Visualize;
 }
 
-class Visualize : public QWidget
+class Visualize : public MyWidget
 {
     Q_OBJECT
 

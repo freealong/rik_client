@@ -2,7 +2,7 @@
 #include "ui_visualize.h"
 
 Visualize::Visualize(QWidget *parent) :
-    QWidget(parent),
+    MyWidget(parent),
     ui(new Ui::Visualize),
     show_pose(false),
     show_joints(false)

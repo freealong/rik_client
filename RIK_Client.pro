@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     sidebar.cpp \
     tcpcommon.cpp \
     visualize.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
+    mywidget.cpp
 
 HEADERS  += mainwindow.h \
     pose.h \
@@ -31,7 +32,8 @@ HEADERS  += mainwindow.h \
     sharetypes.h \
     tcpcommon.h \
     visualize.h \
-    qcustomplot.h
+    qcustomplot.h \
+    mywidget.h
 
 FORMS    += mainwindow.ui \
     robotsettings.ui \

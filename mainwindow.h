@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 
+#include "mywidget.h"
 #include "sidebar.h"
 #include "robotsettings.h"
 #include "visualize.h"
@@ -28,8 +29,6 @@ private slots:
     void show_connect();
     void show_rbtsettings();
     void show_visualize();
-    /* @TODO hide sidebar when other widget active by user
-     * */
 
     void on_button_connect_clicked();
     void download_table();
@@ -44,7 +43,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    QWidget* widgets[NUMS_WGT]; // except for sidebar
+    MyWidget* widgets[NUMS_WGT]; // except for sidebar
     SideBar* bar;
     QWidget* currentWidget;
 

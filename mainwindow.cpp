@@ -45,6 +45,9 @@ MainWindow::MainWindow(QWidget *parent) :
     bar->move(margin_x - bar->width(), 0);
     bar->setStatus(false);
 
+    connect(widgets[CONNECT_WGT], &MyWidget::getFocus, [=] () {show_sidebar(true);});
+    connect(widgets[RBTSETTINGS_WGT], &RobotSettings::getFocus, [=] () {show_sidebar(true);});
+    connect(widgets[VISUALIZE_WGT], &Visualize::getFocus, [=] () {show_sidebar(true);});
     // connect sidebar and other widgets
     connect(bar, &SideBar::connect_request, this, &MainWindow::show_connect);
     connect(bar, &SideBar::sidebar_request, this, &MainWindow::show_sidebar);

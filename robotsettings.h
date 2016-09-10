@@ -1,7 +1,7 @@
 #ifndef ROBOTSETTINGS_H
 #define ROBOTSETTINGS_H
 
-#include <QWidget>
+#include <mywidget.h>
 
 #include "sharetypes.h"
 
@@ -9,7 +9,7 @@ namespace Ui {
 class RobotSettings;
 }
 
-class RobotSettings : public QWidget
+class RobotSettings : public MyWidget
 {
     Q_OBJECT
 
