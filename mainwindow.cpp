@@ -142,25 +142,42 @@ void MainWindow::show_visualize()
 
 void MainWindow::on_button_connect_clicked()
 {
-    if (cli.is_connected())
+    if(!cli.is_connected())
     {
-        cli.disconnect_server();
-        ui->label->setText("Disconnected!!!");
-        ui->button_connect->setText("connect");
-    }
-    else
-    {
-        ui->label->setText("Connecting...");
         std::string ip = ui->lineEdit_ip->text().toStdString();
         int port = ui->lineEdit_port->text().toInt();
-        cli.connect_server(ip.c_str(), port);
+        ucli.connect_server(ip.c_str(), port);
+    }
+
+    if(!ucli.isTcpListen)
+        ui->label->setText("Error on UDP connecting***");
+    else
+    {
+//        qDebug() << "else...";
         if (cli.is_connected())
         {
-            ui->label->setText("Connected!!!");
-            ui->button_connect->setText("disconnect");
+            cli.disconnect_server();
+            cli = TcpClient();
+            ui->label->setText("Disconnected!!!");
+            ui->button_connect->setText("connect");
+            qDebug() << "disconnected";
         }
         else
-            ui->label->setText("Error on connecting***");
+        {
+//            qDebug() << "else.. else..";
+            ui->label->setText("Connecting...");
+            std::string ip = ui->lineEdit_ip->text().toStdString();
+            int port = ucli.tcp_port;
+            cli.connect_server(ip.c_str(), port);
+            qDebug() << "after connect...";
+            if (cli.is_connected())
+            {
+                ui->label->setText("Connected!!!");
+                ui->button_connect->setText("disconnect");
+            }
+            else
+                ui->label->setText("Error on connecting***");
+        }
     }
     if (cli.is_connected())
     {
