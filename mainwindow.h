@@ -8,6 +8,7 @@
 #include "sidebar.h"
 #include "robotsettings.h"
 #include "visualize.h"
+#include "taskassignment.h"
 #include "tcpclient.h"
 
 namespace Ui {
@@ -22,13 +23,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    enum widgets_name {CONNECT_WGT, RBTSETTINGS_WGT, VISUALIZE_WGT, NUMS_WGT};
+    enum widgets_name {CONNECT_WGT, RBTSETTINGS_WGT, VISUALIZE_WGT, TASKASSIGNMENT_WGT, NUMS_WGT};
 
 private slots:
     void show_sidebar(bool show);
     void show_connect();
     void show_rbtsettings();
     void show_visualize();
+    void show_task();
 
     void on_button_connect_clicked();
     void download_table();
@@ -37,6 +39,7 @@ private slots:
     void start_get_joints(bool isShow);
     void update_pose();
     void update_joints();
+    void send_target(float target);
 
     void on_button_test_clicked();
 
