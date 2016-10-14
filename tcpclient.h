@@ -25,6 +25,7 @@ public:
     int upload_table(dh_table& t);
     int get_current_pose(Eigen::VectorXf &v);
     int get_current_joints(Eigen::VectorXf &v);
+    int send_target(float target);
     void test();
 
 

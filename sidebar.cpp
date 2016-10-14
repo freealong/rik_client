@@ -33,3 +33,8 @@ void SideBar::on_visualize_botton_clicked()
 {
     emit visualize_request();
 }
+
+void SideBar::on_task_button_clicked()
+{
+    emit task_request();
+}

@@ -97,6 +97,16 @@ int TcpClient::get_current_joints(Eigen::VectorXf &v)
     return 0;
 }
 
+int TcpClient::send_target(float target)
+{
+    if (sockfd == -1)
+        return -1;
+    std::string msg("send target");
+    write(sockfd, msg);
+    write(sockfd, &target, sizeof(target));
+    return 0;
+}
+
 void TcpClient::test()
 {
     std::string msg("test");

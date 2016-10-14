@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     widgets[CONNECT_WGT] = ui->centralWidget;
     widgets[RBTSETTINGS_WGT] = new RobotSettings(this);
     widgets[VISUALIZE_WGT] = new Visualize(this);
+    widgets[TASKASSIGNMENT_WGT] = new TaskAssignment(this);
     bar = new SideBar(this);
     poseTimer = new QTimer;
     jointsTimer = new QTimer;
@@ -33,6 +34,10 @@ MainWindow::MainWindow(QWidget *parent) :
 //    pal.setColor(QPalette::Background, Qt::yellow);
     widgets[VISUALIZE_WGT]->setPalette(pal);
 
+    widgets[TASKASSIGNMENT_WGT]->setAutoFillBackground(true);
+//    pal.setColor(QPalette::Background, Qt::yellow);
+    widgets[TASKASSIGNMENT_WGT]->setPalette(pal);
+
 //    bar->setAutoFillBackground(true);
 //    pal.setColor(QPalette::Background, Qt::black);
     bar->setPalette(pal);
@@ -42,17 +47,20 @@ MainWindow::MainWindow(QWidget *parent) :
 
     widgets[RBTSETTINGS_WGT]->move(0, - widgets[RBTSETTINGS_WGT]->height());
     widgets[VISUALIZE_WGT]->move(0, - widgets[VISUALIZE_WGT]->height());
+    widgets[TASKASSIGNMENT_WGT]->move(0, - widgets[TASKASSIGNMENT_WGT]->height());
     bar->move(margin_x - bar->width(), 0);
     bar->setStatus(false);
 
     connect(widgets[CONNECT_WGT], &MyWidget::getFocus, [=] () {show_sidebar(true);});
-    connect(widgets[RBTSETTINGS_WGT], &RobotSettings::getFocus, [=] () {show_sidebar(true);});
-    connect(widgets[VISUALIZE_WGT], &Visualize::getFocus, [=] () {show_sidebar(true);});
+    connect(widgets[RBTSETTINGS_WGT], &MyWidget::getFocus, [=] () {show_sidebar(true);});
+    connect(widgets[VISUALIZE_WGT], &MyWidget::getFocus, [=] () {show_sidebar(true);});
+    connect(widgets[TASKASSIGNMENT_WGT], &MyWidget::getFocus, [=] () {show_sidebar(true);});
     // connect sidebar and other widgets
     connect(bar, &SideBar::connect_request, this, &MainWindow::show_connect);
     connect(bar, &SideBar::sidebar_request, this, &MainWindow::show_sidebar);
     connect(bar, &SideBar::rbtsettings_request, this, &MainWindow::show_rbtsettings);
     connect(bar, &SideBar::visualize_request, this, &MainWindow::show_visualize);
+    connect(bar, &SideBar::task_request, this, &MainWindow::show_task);
 
     // connect this and robotsettings
     connect((RobotSettings*)widgets[RBTSETTINGS_WGT], &RobotSettings::download_request, this, &MainWindow::download_table);
@@ -62,6 +70,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect((Visualize*)widgets[VISUALIZE_WGT], &Visualize::pose_request, this, &MainWindow::start_get_pose);
     connect(jointsTimer, SIGNAL(timeout()), this, SLOT(update_joints()));
     connect((Visualize*)widgets[VISUALIZE_WGT], &Visualize::joints_request, this, &MainWindow::start_get_joints);
+    // connect this and task
+    connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_target_request, this, &MainWindow::send_target);
 
 //    ui->tableWidget->setColumnCount(6);
 //    ui->tableWidget->setRowCount(6);
@@ -137,6 +147,16 @@ void MainWindow::show_visualize()
     currentWidget->move(0, -currentWidget->height());
     widgets[VISUALIZE_WGT]->move(0, 0);
     currentWidget = widgets[VISUALIZE_WGT];
+    bar->setFocus();
+}
+
+void MainWindow::show_task()
+{
+    if (currentWidget == widgets[TASKASSIGNMENT_WGT])
+        return;
+    currentWidget->move(0, -currentWidget->height());
+    widgets[TASKASSIGNMENT_WGT]->move(0, 0);
+    currentWidget = widgets[TASKASSIGNMENT_WGT];
     bar->setFocus();
 }
 
@@ -244,6 +264,14 @@ void MainWindow::update_joints()
         cli.get_current_joints(v);
         Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
         vlz->update_joints(v);
+    }
+}
+
+void MainWindow::send_target(float target)
+{
+    if (cli.is_connected())
+    {
+        cli.send_target(target);
     }
 }
 
