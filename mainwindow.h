@@ -10,6 +10,7 @@
 #include "visualize.h"
 #include "taskassignment.h"
 #include "tcpclient.h"
+#include "udpclient.h"
 
 namespace Ui {
 class MainWindow;
@@ -53,6 +54,7 @@ private:
     QTimer* poseTimer;
     QTimer* jointsTimer;
 
+    UdpClient ucli;
     TcpClient cli;
 
     const int margin_x = 30;

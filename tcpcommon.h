@@ -11,6 +11,9 @@
 #include <Eigen>
 #include "sharetypes.h"
 
+const int msg_size = 100;
+const int buf_size = 256;
+
 void write(int sockfd, const std::string &str);
 
 void write(int sockfd, const dh_parametrs &p);

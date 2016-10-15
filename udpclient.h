@@ -1,14 +1,14 @@
-#ifndef TCPCLIENT_H
-#define TCPCLIENT_H
+#ifndef UDPCLIENT_H
+#define UDPCLIENT_H
 
 #include "tcpcommon.h"
 
 #include <QDebug>
 
-class TcpClient
+class UdpClient
 {
 public:
-    TcpClient();
+    UdpClient();
 
     inline void print(const char *m)
     {
@@ -21,13 +21,9 @@ public:
 
     void connect_server(const char* address, int port);
     void disconnect_server();
-    int download_table(dh_table& t);
-    int upload_table(dh_table& t);
-    int get_current_pose(Eigen::VectorXf &v);
-    int get_current_joints(Eigen::VectorXf &v);
-    int send_target(float target);
     void test();
-
+    bool isTcpListen;
+    int tcp_port;
 
 private:
     char msg[msg_size];
@@ -35,4 +31,4 @@ private:
     int sockfd;
 };
 
-#endif // TCPCLIENT_H
+#endif // UDPCLIENT_H

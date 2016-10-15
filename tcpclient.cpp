@@ -29,17 +29,21 @@ void TcpClient::connect_server(const char *address, int port)
           (char *)&serv_addr.sin_addr.s_addr,
           server->h_length);
     serv_addr.sin_port = htons(port);
+//    qDebug() << "port = " << port;
+//    qDebug() << "sockfd = " << sockfd;
     if (connect(sockfd,(struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
     {
-        print("ERROR connecting");
+        print("ERROR tcp connecting");
         sockfd = -1;
         return;
     }
     print("connect to server successfully.");
 
     std::string msg("load robot");
+    print("writing...");
     write(sockfd, msg);
-    read(sockfd, msg);
+    print("reading...");
+//    read(sockfd, msg);
     if (msg == "error on load robot")
         print("ERROR on load robot");
     return;
