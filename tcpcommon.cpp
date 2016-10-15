@@ -1,8 +1,12 @@
 #include "tcpcommon.h"
+#include <QDebug>
 
 void write(int sockfd, const std::string &str) {
   uint32_t len = str.length();
+//  qDebug() << "write len";
   write(sockfd, &len, sizeof(len));
+  sleep(0.1);
+//  qDebug() << "write data";
   write(sockfd, str.data(), len);
 }
 

@@ -165,40 +165,36 @@ void MainWindow::on_button_connect_clicked()
     if(!cli.is_connected())
     {
         std::string ip = ui->lineEdit_ip->text().toStdString();
-        int port = ui->lineEdit_port->text().toInt();
-        ucli.connect_server(ip.c_str(), port);
-    }
-
-    if(!ucli.isTcpListen)
-        ui->label->setText("Error on UDP connecting***");
-    else
-    {
-//        qDebug() << "else...";
-        if (cli.is_connected())
+        int udp_port = ui->lineEdit_port->text().toInt();
+        ucli.connect_server(ip.c_str(), udp_port);
+        if(!ucli.isTcpListen)
         {
-            cli.disconnect_server();
-            cli = TcpClient();
-            ui->label->setText("Disconnected!!!");
-            ui->button_connect->setText("connect");
-            qDebug() << "disconnected";
+            ui->label->setText("Error on UDP connecting***");
+            return;
+        }
+        ui->label->setText("Connecting...");
+        int tcp_port = ucli.tcp_port;
+        cli.connect_server(ip.c_str(), tcp_port);
+        if(cli.is_connected())
+        {
+            ui->label->setText("Connected");
+            ui->button_connect->setText("disconnect");
         }
         else
         {
-//            qDebug() << "else.. else..";
-            ui->label->setText("Connecting...");
-            std::string ip = ui->lineEdit_ip->text().toStdString();
-            int port = ucli.tcp_port;
-            cli.connect_server(ip.c_str(), port);
-            qDebug() << "after connect...";
-            if (cli.is_connected())
-            {
-                ui->label->setText("Connected!!!");
-                ui->button_connect->setText("disconnect");
-            }
-            else
-                ui->label->setText("Error on connecting***");
+            ui->label->setText("Error on TCP connecting***");
+            ui->button_connect->setText("connect");
         }
     }
+    else
+    {
+        cli.disconnect_server();
+        cli = TcpClient();
+        ui->label->setText("Disconnected!!!");
+        ui->button_connect->setText("connect");
+        qDebug() << "disconnected";
+    }
+
     if (cli.is_connected())
     {
         download_table();

@@ -37,13 +37,14 @@ void TcpClient::connect_server(const char *address, int port)
         sockfd = -1;
         return;
     }
-    print("connect to server successfully.");
+//    print("connect to server successfully.");
 
     std::string msg("load robot");
-    print("writing...");
+    sleep(0.1);
     write(sockfd, msg);
-    print("reading...");
-//    read(sockfd, msg);
+//    print("reading msg...");
+    sleep(1);
+    read(sockfd, msg);
     if (msg == "error on load robot")
         print("ERROR on load robot");
     return;

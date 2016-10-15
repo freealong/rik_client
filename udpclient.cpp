@@ -58,4 +58,3 @@ void UdpClient::disconnect_server()
     close(sockfd);
     sockfd = -1;
 }
-
