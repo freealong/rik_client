@@ -34,13 +34,14 @@ private slots:
     void show_task();
 
     void on_button_connect_clicked();
+    void on_button_start_clicked();
     void download_table();
     void upload_table();
     void start_get_pose(bool isShow);
     void start_get_joints(bool isShow);
     void update_pose();
     void update_joints();
-    void send_target(float target);
+    void send_target(Eigen::VectorXf target);
 
     void on_button_test_clicked();
 

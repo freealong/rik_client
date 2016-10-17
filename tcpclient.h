@@ -21,11 +21,12 @@ public:
 
     void connect_server(const char* address, int port);
     void disconnect_server();
+    int load_robot();
     int download_table(dh_table& t);
     int upload_table(dh_table& t);
     int get_current_pose(Eigen::VectorXf &v);
     int get_current_joints(Eigen::VectorXf &v);
-    int send_target(float target);
+    int send_target(Eigen::VectorXf &target);
     void test();
 
 

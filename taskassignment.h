@@ -3,6 +3,8 @@
 
 #include <mywidget.h>
 
+#include <Eigen>
+
 namespace Ui {
 class TaskAssignment;
 }
@@ -16,7 +18,7 @@ public:
     ~TaskAssignment();
 
 signals:
-    void send_target_request(float);
+    void send_target_request(Eigen::VectorXf);
 
 private slots:
     void on_pushButton_clicked();

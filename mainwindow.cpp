@@ -184,6 +184,7 @@ void MainWindow::on_button_connect_clicked()
         {
             ui->label->setText("Error on TCP connecting***");
             ui->button_connect->setText("connect");
+            qDebug() << "connected";
         }
     }
     else
@@ -194,11 +195,14 @@ void MainWindow::on_button_connect_clicked()
         ui->button_connect->setText("connect");
         qDebug() << "disconnected";
     }
+}
 
-    if (cli.is_connected())
-    {
-        download_table();
-    }
+void MainWindow::on_button_start_clicked()
+{
+    if (cli.load_robot() == 0)
+        ui->label_robot->setText("SUCCESS on load robot");
+    else
+        ui->label_robot->setText("ERROR on load robot");
 }
 
 void MainWindow::download_table()
@@ -263,7 +267,7 @@ void MainWindow::update_joints()
     }
 }
 
-void MainWindow::send_target(float target)
+void MainWindow::send_target(Eigen::VectorXf target)
 {
     if (cli.is_connected())
     {
@@ -275,4 +279,5 @@ void MainWindow::on_button_test_clicked()
 {
     cli.test();
 }
+
 

@@ -37,16 +37,8 @@ void TcpClient::connect_server(const char *address, int port)
         sockfd = -1;
         return;
     }
-//    print("connect to server successfully.");
+    print("connect to server successfully.");
 
-    std::string msg("load robot");
-    sleep(0.1);
-    write(sockfd, msg);
-//    print("reading msg...");
-    sleep(1);
-    read(sockfd, msg);
-    if (msg == "error on load robot")
-        print("ERROR on load robot");
     return;
 }
 
@@ -54,6 +46,26 @@ void TcpClient::disconnect_server()
 {
     close(sockfd);
     sockfd = -1;
+}
+
+int TcpClient::load_robot()
+{
+    if (sockfd == -1)
+        return -1;
+    std::string msg("load robot");
+    sleep(0.1);
+    write(sockfd, msg);
+    print("reading msg...");
+    sleep(1);
+    read(sockfd, msg);
+    print("finish");
+    if (msg == "error on load robot")
+    {
+        print("ERROR on load robot");
+        return -1;
+    }
+    else
+        return 0;
 }
 
 int TcpClient::download_table(dh_table &t)
@@ -98,13 +110,13 @@ int TcpClient::get_current_joints(Eigen::VectorXf &v)
     return 0;
 }
 
-int TcpClient::send_target(float target)
+int TcpClient::send_target(Eigen::VectorXf &target)
 {
     if (sockfd == -1)
         return -1;
-    std::string msg("send target");
+    std::string msg("set target pose");
     write(sockfd, msg);
-    write(sockfd, &target, sizeof(target));
+    write(sockfd, target);
     return 0;
 }
 
