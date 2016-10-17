@@ -1,6 +1,6 @@
 #include "tcpclient.h"
 
-TcpClient::TcpClient() : sockfd(-1)
+TcpClient::TcpClient() : sockfd(-1), load(false)
 {
     memset(msg, 0x00, msg_size);
     memset(buf, 0x00, buf_size);
@@ -50,8 +50,9 @@ void TcpClient::disconnect_server()
 
 int TcpClient::load_robot()
 {
-    if (sockfd == -1)
+    if (!is_connected())
         return -1;
+
     std::string msg("load robot");
     sleep(0.1);
     write(sockfd, msg);
@@ -62,16 +63,21 @@ int TcpClient::load_robot()
     if (msg == "error on load robot")
     {
         print("ERROR on load robot");
+        load = false;
         return -1;
     }
     else
+    {
+        load = true;
         return 0;
+    }
 }
 
 int TcpClient::download_table(dh_table &t)
 {
-    if (sockfd == -1)
+    if (!is_robot_ready())
         return -1;
+
     std::string msg("download DH table");
     write(sockfd, msg);
     read(sockfd, msg);
@@ -82,8 +88,9 @@ int TcpClient::download_table(dh_table &t)
 
 int TcpClient::upload_table(dh_table &t)
 {
-    if (sockfd == -1)
+    if (!is_robot_ready())
         return -1;
+
     std::string msg("upload DH table");
     write(sockfd, msg);
     write(sockfd, t);
@@ -92,8 +99,9 @@ int TcpClient::upload_table(dh_table &t)
 
 int TcpClient::get_current_pose(Eigen::VectorXf &v)
 {
-    if (sockfd == -1)
+    if (!is_robot_ready())
         return -1;
+
     std::string msg("get current pose");
     write(sockfd, msg);
     read(sockfd, v);
@@ -102,8 +110,9 @@ int TcpClient::get_current_pose(Eigen::VectorXf &v)
 
 int TcpClient::get_current_joints(Eigen::VectorXf &v)
 {
-    if (sockfd == -1)
+    if (!is_robot_ready())
         return -1;
+
     std::string msg("get current joints");
     write(sockfd, msg);
     read(sockfd, v);
@@ -112,8 +121,9 @@ int TcpClient::get_current_joints(Eigen::VectorXf &v)
 
 int TcpClient::send_target(Eigen::VectorXf &target)
 {
-    if (sockfd == -1)
+    if (!is_robot_ready())
         return -1;
+
     std::string msg("set target pose");
     write(sockfd, msg);
     write(sockfd, target);

@@ -18,6 +18,14 @@ public:
     {
         return sockfd > 0;
     }
+    inline bool is_loaded()
+    {
+        return load;
+    }
+    inline bool is_robot_ready()
+    {
+        return load && is_connected();
+    }
 
     void connect_server(const char* address, int port);
     void disconnect_server();
@@ -34,6 +42,7 @@ private:
     char msg[msg_size];
     char buf[buf_size];
     int sockfd;
+    bool load;
 };
 
 #endif // TCPCLIENT_H

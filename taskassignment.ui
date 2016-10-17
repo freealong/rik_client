@@ -22,6 +22,9 @@
      <height>321</height>
     </rect>
    </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
    <widget class="QWidget" name="tab_debug">
     <attribute name="title">
      <string>Debug</string>
@@ -54,6 +57,19 @@
     <attribute name="title">
      <string>Tab 2</string>
     </attribute>
+    <widget class="QSlider" name="horizontalSlider">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>40</y>
+       <width>160</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

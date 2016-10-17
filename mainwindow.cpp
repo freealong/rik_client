@@ -207,26 +207,20 @@ void MainWindow::on_button_start_clicked()
 
 void MainWindow::download_table()
 {
-    if (cli.is_connected())
-    {
-        RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
-        cli.download_table(rbt->rbt_table);
-        rbt->set_table(rbt->rbt_table);
-        Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
-        vlz->update_joints_widget(rbt->rbt_table);
-    }
+    RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
+    cli.download_table(rbt->rbt_table);
+    rbt->set_table(rbt->rbt_table);
+    Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
+    vlz->update_joints_widget(rbt->rbt_table);
 }
 
 void MainWindow::upload_table()
 {
-    if (cli.is_connected())
-    {
-        RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
-        rbt->get_table(rbt->rbt_table);
-        cli.upload_table(rbt->rbt_table);
-        Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
-        vlz->update_joints_widget(rbt->rbt_table);
-    }
+    RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
+    rbt->get_table(rbt->rbt_table);
+    cli.upload_table(rbt->rbt_table);
+    Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
+    vlz->update_joints_widget(rbt->rbt_table);
 }
 
 void MainWindow::start_get_pose(bool isShow)
@@ -247,32 +241,23 @@ void MainWindow::start_get_joints(bool isShow)
 
 void MainWindow::update_pose()
 {
-    if (cli.is_connected())
-    {
-        Eigen::VectorXf v;
-        cli.get_current_pose(v);
-        Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
-        vlz->update_pose(v);
-    }
+    Eigen::VectorXf v;
+    cli.get_current_pose(v);
+    Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
+    vlz->update_pose(v);
 }
 
 void MainWindow::update_joints()
 {
-    if (cli.is_connected())
-    {
-        Eigen::VectorXf v;
-        cli.get_current_joints(v);
-        Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
-        vlz->update_joints(v);
-    }
+    Eigen::VectorXf v;
+    cli.get_current_joints(v);
+    Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
+    vlz->update_joints(v);
 }
 
 void MainWindow::send_target(Eigen::VectorXf target)
 {
-    if (cli.is_connected())
-    {
-        cli.send_target(target);
-    }
+    cli.send_target(target);
 }
 
 void MainWindow::on_button_test_clicked()
