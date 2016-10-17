@@ -48,6 +48,15 @@ void TcpClient::disconnect_server()
     sockfd = -1;
 }
 
+int TcpClient::send_msg(std::string msg)
+{
+    if (!is_connected())
+        return -1;
+
+    write(sockfd, msg);
+    return 0;
+}
+
 int TcpClient::load_robot()
 {
     if (!is_connected())

@@ -29,6 +29,7 @@ public:
 
     void connect_server(const char* address, int port);
     void disconnect_server();
+    int send_msg(std::string msg);
     int load_robot();
     int download_table(dh_table& t);
     int upload_table(dh_table& t);

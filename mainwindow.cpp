@@ -206,6 +206,20 @@ void MainWindow::on_button_start_clicked()
         ui->label_robot->setText("ERROR on load robot");
 }
 
+void MainWindow::on_button_motor_clicked()
+{
+    std::string s = ui->button_motor->text().toStdString();
+    if (cli.send_msg(s) < 0)
+    {
+        qDebug() << "ERROR on start/stop motor";
+        return;
+    }
+    if (s == "start motor")
+        ui->button_motor->setText("stop motor");
+    else
+        ui->button_motor->setText("start motor");
+}
+
 void MainWindow::download_table()
 {
     RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
@@ -299,5 +313,3 @@ void MainWindow::on_button_test_clicked()
 {
     cli.test();
 }
-
-

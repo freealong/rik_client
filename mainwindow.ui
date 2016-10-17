@@ -170,6 +170,24 @@
    <widget class="QPushButton" name="button_test">
     <property name="geometry">
      <rect>
+      <x>220</x>
+      <y>260</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>test</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_motor">
+    <property name="geometry">
+     <rect>
       <x>510</x>
       <y>250</y>
       <width>91</width>
@@ -182,7 +200,7 @@
      </font>
     </property>
     <property name="text">
-     <string>test</string>
+     <string>start motor</string>
     </property>
    </widget>
   </widget>

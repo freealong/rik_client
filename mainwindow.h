@@ -46,6 +46,8 @@ private slots:
 
     void on_button_test_clicked();
 
+    void on_button_motor_clicked();
+
 private:
     Ui::MainWindow *ui;
 
