@@ -35,6 +35,7 @@ public:
     int get_current_pose(Eigen::VectorXf &v);
     int get_current_joints(Eigen::VectorXf &v);
     int send_target(Eigen::VectorXf &target);
+    int send_mode(int mode);
     void test();
 
 

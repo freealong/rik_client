@@ -42,6 +42,7 @@ private slots:
     void update_pose();
     void update_joints();
     void send_target(Eigen::VectorXf target);
+    void send_mode(int mode);
 
     void on_button_test_clicked();
 
@@ -57,6 +58,7 @@ private:
 
     UdpClient ucli;
     TcpClient cli;
+    int joints_num = -1;
 
     const int margin_x = 30;
 };

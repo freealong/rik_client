@@ -56,10 +56,10 @@ int TcpClient::load_robot()
     std::string msg("load robot");
     sleep(0.1);
     write(sockfd, msg);
-    print("reading msg...");
+//    print("reading msg...");
     sleep(1);
     read(sockfd, msg);
-    print("finish");
+//    print("finish");
     if (msg == "error on load robot")
     {
         print("ERROR on load robot");
@@ -69,7 +69,7 @@ int TcpClient::load_robot()
     else
     {
         load = true;
-        return 0;
+        return std::stoi(msg);
     }
 }
 
@@ -124,9 +124,20 @@ int TcpClient::send_target(Eigen::VectorXf &target)
     if (!is_robot_ready())
         return -1;
 
-    std::string msg("set target pose");
+    std::string msg("set target");
     write(sockfd, msg);
     write(sockfd, target);
+    return 0;
+}
+
+int TcpClient::send_mode(int mode)
+{
+    if (!is_robot_ready())
+        return -1;
+
+    std::string msg("set control mode");
+    write(sockfd, msg);
+    write(sockfd, &mode, sizeof(mode));
     return 0;
 }
 

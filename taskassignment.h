@@ -17,11 +17,18 @@ public:
     explicit TaskAssignment(QWidget *parent = 0);
     ~TaskAssignment();
 
+    void update_widget(int n);
+
 signals:
     void send_target_request(Eigen::VectorXf);
+    void send_mode_request(int);
 
 private slots:
-    void on_pushButton_clicked();
+    void on_set_mode_btn_clicked();
+
+    void on_send_joints_btn_clicked();
+
+    void on_send_pose_btn_clicked();
 
 private:
     Ui::TaskAssignment *ui;

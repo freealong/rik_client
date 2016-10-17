@@ -72,6 +72,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect((Visualize*)widgets[VISUALIZE_WGT], &Visualize::joints_request, this, &MainWindow::start_get_joints);
     // connect this and task
     connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_target_request, this, &MainWindow::send_target);
+    connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_mode_request, this, &MainWindow::send_mode);
 
 //    ui->tableWidget->setColumnCount(6);
 //    ui->tableWidget->setRowCount(6);
@@ -199,7 +200,7 @@ void MainWindow::on_button_connect_clicked()
 
 void MainWindow::on_button_start_clicked()
 {
-    if (cli.load_robot() == 0)
+    if ((joints_num = cli.load_robot()) >= 0)
         ui->label_robot->setText("SUCCESS on load robot");
     else
         ui->label_robot->setText("ERROR on load robot");
@@ -208,7 +209,11 @@ void MainWindow::on_button_start_clicked()
 void MainWindow::download_table()
 {
     RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
-    cli.download_table(rbt->rbt_table);
+    if (cli.download_table(rbt->rbt_table) < 0)
+    {
+        qDebug() << "ERROR on download table";
+        return;
+    }
     rbt->set_table(rbt->rbt_table);
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
     vlz->update_joints_widget(rbt->rbt_table);
@@ -218,7 +223,11 @@ void MainWindow::upload_table()
 {
     RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
     rbt->get_table(rbt->rbt_table);
-    cli.upload_table(rbt->rbt_table);
+    if (cli.upload_table(rbt->rbt_table) < 0)
+    {
+        qDebug() << "ERROR on upload table";
+        return;
+    }
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
     vlz->update_joints_widget(rbt->rbt_table);
 }
@@ -242,7 +251,11 @@ void MainWindow::start_get_joints(bool isShow)
 void MainWindow::update_pose()
 {
     Eigen::VectorXf v;
-    cli.get_current_pose(v);
+    if (cli.get_current_pose(v) < 0)
+    {
+        qDebug() << "ERROR on update_pose";
+        return;
+    }
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
     vlz->update_pose(v);
 }
@@ -250,14 +263,36 @@ void MainWindow::update_pose()
 void MainWindow::update_joints()
 {
     Eigen::VectorXf v;
-    cli.get_current_joints(v);
+    if (cli.get_current_joints(v) < 0)
+    {
+        qDebug() << "ERROR on update_joints";
+        return;
+    }
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
     vlz->update_joints(v);
 }
 
 void MainWindow::send_target(Eigen::VectorXf target)
 {
-    cli.send_target(target);
+    if (cli.send_target(target) < 0)
+    {
+        qDebug() << "ERROR on send target";
+        return;
+    }
+}
+
+void MainWindow::send_mode(int mode)
+{
+    if (cli.send_mode(mode) < 0)
+    {
+        qDebug() << "ERROR on send mode";
+        return;
+    }
+    if (mode == 0)
+    {
+        TaskAssignment* tsk = (TaskAssignment*)widgets[TASKASSIGNMENT_WGT];
+        tsk->update_widget(joints_num);
+    }
 }
 
 void MainWindow::on_button_test_clicked()
