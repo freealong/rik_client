@@ -78,7 +78,7 @@ int TcpClient::load_robot()
     else
     {
         load = true;
-        return std::stoi(msg);
+        return atoi(msg.c_str());
     }
 }
 

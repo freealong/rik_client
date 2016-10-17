@@ -200,7 +200,8 @@ void MainWindow::on_button_connect_clicked()
 
 void MainWindow::on_button_start_clicked()
 {
-    if ((joints_num = cli.load_robot()) >= 0)
+    joints_num = cli.load_robot();
+    if (joints_num >= 0)
         ui->label_robot->setText("SUCCESS on load robot");
     else
         ui->label_robot->setText("ERROR on load robot");

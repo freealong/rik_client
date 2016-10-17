@@ -8,6 +8,7 @@ TaskAssignment::TaskAssignment(QWidget *parent) :
     ui(new Ui::TaskAssignment)
 {
     ui->setupUi(this);
+    ui->tab_pose->setDisabled(true);
 }
 
 TaskAssignment::~TaskAssignment()
@@ -28,7 +29,10 @@ void TaskAssignment::update_widget(int n)
     else
     {
         for (int i = size; i < n; ++i)
+        {
             ui->listWidget->addItem("0");
+            ui->listWidget->openPersistentEditor(ui->listWidget->item(i));
+        }
     }
 }
 
@@ -40,15 +44,15 @@ void TaskAssignment::on_set_mode_btn_clicked()
     {
     case 0 :
         ui->tab_joints->setEnabled(true);
-        ui->tab_target->setEnabled(false);
+        ui->tab_pose->setEnabled(false);
         break;
     case 1 :
         ui->tab_joints->setEnabled(false);
-        ui->tab_target->setEnabled(true);
+        ui->tab_pose->setEnabled(true);
         break;
     default:
         ui->tab_joints->setEnabled(false);
-        ui->tab_target->setEnabled(false);
+        ui->tab_pose->setEnabled(false);
     }
     emit send_mode_request(mode);
 }

@@ -53,7 +53,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab_target">
+   <widget class="QWidget" name="tab_pose">
     <attribute name="title">
      <string>pose mode</string>
     </attribute>
