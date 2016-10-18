@@ -12,23 +12,24 @@ public:
     void update_joints_limits(const joints_limits& jl);
     void update_joints(const Eigen::VectorXf& j);
     void update_pose(const Eigen::VectorXf& p);
+    void print_info(void);
     int get_joints_num()
     {
         return joints_num;
     }
-    dh_table& get_dh_table()
+    dh_table get_dh_table()
     {
         return table;
     }
-    joints_limits& get_joints_limits()
+    joints_limits get_joints_limits()
     {
         return limit;
     }
-    Eigen::VectorXf& get_joints()
+    Eigen::VectorXf get_joints()
     {
         return joints;
     }
-    Eigen::VectorXf& get_pose()
+    Eigen::VectorXf get_pose()
     {
         return pose;
     }

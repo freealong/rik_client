@@ -1,5 +1,7 @@
 #include "robotinfo.h"
 
+#include <QDebug>
+
 RobotInfo::RobotInfo():
     joints_num(-1)
 {
@@ -26,3 +28,19 @@ void RobotInfo::update_pose(const Eigen::VectorXf &p)
     pose = p;
 }
 
+void RobotInfo::print_info()
+{
+    qDebug() << "robot joints num: " << joints_num;
+    qDebug() << "dh table size: " << table.size();
+    qDebug() << "joints limits size: " << limit.size();
+    qDebug() << "current joints: ";
+    for (int i = 0; i < joints.rows(); ++i)
+    {
+        qDebug() << joints(i);
+    }
+    qDebug() << "current pose: ";
+    for (int i = 0; i < pose.rows(); ++i)
+    {
+        qDebug() << pose(i);
+    }
+}

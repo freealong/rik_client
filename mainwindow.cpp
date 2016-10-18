@@ -249,7 +249,8 @@ void MainWindow::upload_robot_info()
     // @FIXME:THis is not done.
     RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
     rbt->get_table(rbt->rbt_table);
-    if (cli.upload_robot_info(rbt->rbt_table, robot.get_joints_limits()) < 0)
+    joints_limits jl = robot.get_joints_limits();
+    if (cli.upload_robot_info(rbt->rbt_table, jl) < 0)
     {
         qDebug() << "ERROR on upload robot info";
         return;
@@ -276,26 +277,30 @@ void MainWindow::start_get_joints(bool isShow)
 
 void MainWindow::update_pose()
 {
-    if (cli.get_current_pose(robot.get_pose()) < 0)
+    Eigen::VectorXf p;
+    if (cli.get_current_pose(p) < 0)
     {
         qDebug() << "ERROR on update_pose";
         return;
     }
+    robot.update_pose(p);
 
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
-        vlz->update_pose(robot.get_pose());
+    vlz->update_pose(p);
 }
 
 void MainWindow::update_joints()
 {
-    if (cli.get_current_joints(robot.get_joints()) < 0)
+    Eigen::VectorXf j;
+    if (cli.get_current_joints(j) < 0)
     {
         qDebug() << "ERROR on update_joints";
         return;
     }
+    robot.update_joints(j);
 
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
-        vlz->update_joints(robot.get_joints());
+    vlz->update_joints(j);
 }
 
 void MainWindow::send_target(Eigen::VectorXf target)
@@ -324,4 +329,9 @@ void MainWindow::send_mode(int mode)
 void MainWindow::on_button_test_clicked()
 {
     cli.test();
+}
+
+void MainWindow::on_button_print_clicked()
+{
+   robot.print_info();
 }
