@@ -6,7 +6,8 @@
 TaskAssignment::TaskAssignment(QWidget *parent) :
     MyWidget(parent),
     ui(new Ui::TaskAssignment),
-    show_joints(false)
+    show_joints(false),
+    show_pose(false)
 {
     ui->setupUi(this);
     ui->tab_pose->setDisabled(true);
@@ -25,7 +26,10 @@ void TaskAssignment::update_widget(int n)
     else if (size > n)
     {
         for (int i = size-1; i > n-1; --i)
+        {
             ui->listWidget->takeItem(i);
+            ui->listWidget_actual_joints->takeItem(i);
+        }
     }
     else
     {
@@ -33,20 +37,9 @@ void TaskAssignment::update_widget(int n)
         {
             ui->listWidget->addItem("0");
             ui->listWidget->openPersistentEditor(ui->listWidget->item(i));
+            ui->listWidget_actual_joints->addItem("joint " + QString::number(i) + ": ");
         }
     }
-
-//    ui->listWidget_actual_position->clear();
-//    for(int i=0;i<size;i++)
-//    {
-//        int data = robot
-//        ui->listWidget_actual_position->a
-//    }
-}
-
-void TaskAssignment::mode_0_init()
-{
-//    emit joints_request(true);
 }
 
 void TaskAssignment::on_set_mode_btn_clicked()
@@ -58,7 +51,6 @@ void TaskAssignment::on_set_mode_btn_clicked()
     case 0 :
         ui->tab_joints->setEnabled(true);
         ui->tab_pose->setEnabled(false);
-        mode_0_init();
         break;
     case 1 :
         ui->tab_joints->setEnabled(false);
@@ -97,3 +89,24 @@ void TaskAssignment::on_send_pose_btn_clicked()
     emit send_target_request(target);
 }
 
+
+void TaskAssignment::on_test_btn_clicked()
+{
+    update_widget(6);
+}
+
+void TaskAssignment::on_show_joints_btn_clicked()
+{
+    show_joints = !show_joints;
+    emit send_joints_request(show_joints);
+}
+
+void TaskAssignment::update_joints(const Eigen::VectorXf &v)
+{
+    if (!show_joints)
+        return;
+    for (int i = 0; i < ui->listWidget_actual_joints->count(); ++i)
+    {
+        ui->listWidget_actual_joints->item(i)->setText("joints " + QString::number(i) + ": " + QString::number(v(i)));
+    }
+}

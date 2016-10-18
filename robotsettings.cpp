@@ -7,6 +7,7 @@ RobotSettings::RobotSettings(QWidget *parent) :
 {
     ui->setupUi(this);
     this->installEventFilter(this);
+    ui->button_upload->setDisabled(true);
 }
 
 RobotSettings::~RobotSettings()

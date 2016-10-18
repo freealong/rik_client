@@ -73,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // connect this and task
     connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_target_request, this, &MainWindow::send_target);
     connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_mode_request, this, &MainWindow::send_mode);
-//    connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::joints_request, this, &MainWindow::start_get_joints);
+    connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_joints_request, this, &MainWindow::start_get_joints);
 //    ui->tableWidget->setColumnCount(6);
 //    ui->tableWidget->setRowCount(6);
 //    QTableWidgetItem* item = new QTableWidgetItem;
@@ -301,6 +301,8 @@ void MainWindow::update_joints()
 
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
     vlz->update_joints(j);
+    TaskAssignment* tsk = (TaskAssignment*)widgets[TASKASSIGNMENT_WGT];
+    tsk->update_joints(j);
 }
 
 void MainWindow::send_target(Eigen::VectorXf target)
