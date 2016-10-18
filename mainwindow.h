@@ -11,6 +11,7 @@
 #include "taskassignment.h"
 #include "tcpclient.h"
 #include "udpclient.h"
+#include "robotinfo.h"
 
 namespace Ui {
 class MainWindow;
@@ -60,6 +61,7 @@ private:
 
     UdpClient ucli;
     TcpClient cli;
+    RobotInfo robot;
     int joints_num = -1;
 
     const int margin_x = 30;

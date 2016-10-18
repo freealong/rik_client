@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     qcustomplot.cpp \
     mywidget.cpp \
     taskassignment.cpp \
-    udpclient.cpp
+    udpclient.cpp \
+    robotinfo.cpp
 
 HEADERS  += mainwindow.h \
     pose.h \
@@ -37,7 +38,8 @@ HEADERS  += mainwindow.h \
     qcustomplot.h \
     mywidget.h \
     taskassignment.h \
-    udpclient.h
+    udpclient.h \
+    robotinfo.h
 
 FORMS    += mainwindow.ui \
     robotsettings.ui \

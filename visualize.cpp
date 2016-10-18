@@ -67,6 +67,7 @@ Visualize::~Visualize()
 
 void Visualize::update_pose(Eigen::VectorXf &v)
 {
+    if(!show_pose) return;
     double now = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
     QString pose("pose: ");
     for (unsigned i = 0; i < v.size(); i++)
@@ -97,6 +98,7 @@ void Visualize::update_pose(Eigen::VectorXf &v)
 
 void Visualize::update_joints(Eigen::VectorXf &v)
 {
+    if(!show_joints) return;
     double now = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
     QString joints("joints: ");
     for (unsigned i = 0; i < v.size(); i++)

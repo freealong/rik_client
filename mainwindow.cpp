@@ -73,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // connect this and task
     connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_target_request, this, &MainWindow::send_target);
     connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_mode_request, this, &MainWindow::send_mode);
-
+//    connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::joints_request, this, &MainWindow::start_get_joints);
 //    ui->tableWidget->setColumnCount(6);
 //    ui->tableWidget->setRowCount(6);
 //    QTableWidgetItem* item = new QTableWidgetItem;
@@ -200,8 +200,8 @@ void MainWindow::on_button_connect_clicked()
 
 void MainWindow::on_button_start_clicked()
 {
-    joints_num = cli.load_robot();
-    if (joints_num >= 0)
+    robot.joints_num = cli.load_robot();
+    if (robot.joints_num >= 0)
         ui->label_robot->setText("SUCCESS on load robot");
     else
         ui->label_robot->setText("ERROR on load robot");
@@ -224,12 +224,15 @@ void MainWindow::on_button_motor_clicked()
 void MainWindow::download_table()
 {
     RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
-    if (cli.download_table(rbt->rbt_table) < 0)
+    if (cli.download_table(robot.table) < 0)
     {
         qDebug() << "ERROR on download table";
         return;
     }
+
+    rbt->rbt_table = robot.table;
     rbt->set_table(rbt->rbt_table);
+
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
     vlz->update_joints_widget(rbt->rbt_table);
 }
@@ -265,26 +268,26 @@ void MainWindow::start_get_joints(bool isShow)
 
 void MainWindow::update_pose()
 {
-    Eigen::VectorXf v;
-    if (cli.get_current_pose(v) < 0)
+    if (cli.get_current_pose(robot.pose) < 0)
     {
         qDebug() << "ERROR on update_pose";
         return;
     }
+
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
-    vlz->update_pose(v);
+        vlz->update_pose(robot.pose);
 }
 
 void MainWindow::update_joints()
 {
-    Eigen::VectorXf v;
-    if (cli.get_current_joints(v) < 0)
+    if (cli.get_current_joints(robot.joints) < 0)
     {
         qDebug() << "ERROR on update_joints";
         return;
     }
+
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
-    vlz->update_joints(v);
+        vlz->update_joints(robot.joints);
 }
 
 void MainWindow::send_target(Eigen::VectorXf target)

@@ -18,10 +18,11 @@ public:
     ~TaskAssignment();
 
     void update_widget(int n);
-
+    void mode_0_init();
 signals:
     void send_target_request(Eigen::VectorXf);
     void send_mode_request(int);
+//    void joints_request(bool);
 
 private slots:
     void on_set_mode_btn_clicked();
@@ -32,6 +33,7 @@ private slots:
 
 private:
     Ui::TaskAssignment *ui;
+    bool show_joints;
 };
 
 #endif // TASKASSIGNMENT_H

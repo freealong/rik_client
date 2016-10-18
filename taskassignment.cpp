@@ -5,7 +5,8 @@
 
 TaskAssignment::TaskAssignment(QWidget *parent) :
     MyWidget(parent),
-    ui(new Ui::TaskAssignment)
+    ui(new Ui::TaskAssignment),
+    show_joints(false)
 {
     ui->setupUi(this);
     ui->tab_pose->setDisabled(true);
@@ -34,6 +35,18 @@ void TaskAssignment::update_widget(int n)
             ui->listWidget->openPersistentEditor(ui->listWidget->item(i));
         }
     }
+
+//    ui->listWidget_actual_position->clear();
+//    for(int i=0;i<size;i++)
+//    {
+//        int data = robot
+//        ui->listWidget_actual_position->a
+//    }
+}
+
+void TaskAssignment::mode_0_init()
+{
+//    emit joints_request(true);
 }
 
 void TaskAssignment::on_set_mode_btn_clicked()
@@ -45,6 +58,7 @@ void TaskAssignment::on_set_mode_btn_clicked()
     case 0 :
         ui->tab_joints->setEnabled(true);
         ui->tab_pose->setEnabled(false);
+        mode_0_init();
         break;
     case 1 :
         ui->tab_joints->setEnabled(false);
