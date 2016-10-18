@@ -20,6 +20,10 @@ void write(int sockfd, const dh_parametrs &p);
 
 void write(int sockfd, const dh_table &t);
 
+void write(int sockfd, const limits &l);
+
+void write(int sockfd, const joints_limits &jl);
+
 void write(int sockfd, const Eigen::VectorXf &v);
 
 void read(int sockfd, std::string &str);
@@ -27,6 +31,10 @@ void read(int sockfd, std::string &str);
 void read(int sockfd, dh_parametrs &p);
 
 void read(int sockfd, dh_table &t);
+
+void read(int sockfd, limits &l);
+
+void read(int sockfd, joints_limits &jl);
 
 void read(int sockfd, Eigen::VectorXf &v);
 

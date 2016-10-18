@@ -26,6 +26,19 @@ void write(int sockfd, const dh_table &t) {
   }
 }
 
+void write(int sockfd, const limits& l) {
+  write(sockfd, &(l.min), sizeof(l.min));
+  write(sockfd, &(l.max), sizeof(l.max));
+}
+
+void write(int sockfd, const joints_limits& jl) {
+  uint32_t len = jl.size();
+  write(sockfd, &len, sizeof(len));
+  for (joints_limits::const_iterator it = jl.begin(); it != jl.end(); it++) {
+    write(sockfd, *it);
+  }
+}
+
 void write(int sockfd, const Eigen::VectorXf &v) {
   uint32_t len = v.size() * sizeof(float);
   write(sockfd, &len, sizeof(len));
@@ -61,6 +74,23 @@ void read(int sockfd, dh_table &t) {
     t.push_back(p);
   }
   t.reserve(len);
+}
+
+void read(int sockfd, limits& l) {
+  read(sockfd, &(l.min), sizeof(l.min));
+  read(sockfd, &(l.max), sizeof(l.max));
+}
+
+void read(int sockfd, joints_limits& jl) {
+  uint32_t len;
+  read(sockfd, &len, sizeof(len));
+  jl.clear();
+  limits l;
+  for (unsigned int i = 0; i < len; ++i) {
+    read(sockfd, l);
+    jl.push_back(l);
+  }
+  jl.reserve(len);
 }
 
 void read(int sockfd, Eigen::VectorXf &v) {

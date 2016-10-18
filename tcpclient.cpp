@@ -82,20 +82,19 @@ int TcpClient::load_robot()
     }
 }
 
-int TcpClient::download_table(dh_table &t)
+int TcpClient::download_robot_info(dh_table &t, joints_limits &jl)
 {
     if (!is_robot_ready())
         return -1;
 
-    std::string msg("download DH table");
+    std::string msg("download robot info");
     write(sockfd, msg);
-    read(sockfd, msg);
-    if (msg == "ready on download DH table")
-        read(sockfd, t);
+    read(sockfd, t);
+    read(sockfd, jl);
     return 0;
 }
 
-int TcpClient::upload_table(dh_table &t)
+int TcpClient::upload_robot_info(dh_table &t, joints_limits &jl)
 {
     if (!is_robot_ready())
         return -1;
@@ -103,6 +102,7 @@ int TcpClient::upload_table(dh_table &t)
     std::string msg("upload DH table");
     write(sockfd, msg);
     write(sockfd, t);
+    write(sockfd, jl);
     return 0;
 }
 

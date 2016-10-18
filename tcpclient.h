@@ -31,8 +31,8 @@ public:
     void disconnect_server();
     int send_msg(std::string msg);
     int load_robot();
-    int download_table(dh_table& t);
-    int upload_table(dh_table& t);
+    int download_robot_info(dh_table& t, joints_limits& jl);
+    int upload_robot_info(dh_table& t, joints_limits& jl);
     int get_current_pose(Eigen::VectorXf &v);
     int get_current_joints(Eigen::VectorXf &v);
     int send_target(Eigen::VectorXf &target);

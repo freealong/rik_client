@@ -63,8 +63,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(bar, &SideBar::task_request, this, &MainWindow::show_task);
 
     // connect this and robotsettings
-    connect((RobotSettings*)widgets[RBTSETTINGS_WGT], &RobotSettings::download_request, this, &MainWindow::download_table);
-    connect((RobotSettings*)widgets[RBTSETTINGS_WGT], &RobotSettings::upload_request, this, &MainWindow::upload_table);
+    connect((RobotSettings*)widgets[RBTSETTINGS_WGT], &RobotSettings::download_request, this, &MainWindow::download_robot_info);
+    connect((RobotSettings*)widgets[RBTSETTINGS_WGT], &RobotSettings::upload_request, this, &MainWindow::upload_robot_info);
     // connect this and visualize
     connect(poseTimer, SIGNAL(timeout()), this, SLOT(update_pose()));
     connect((Visualize*)widgets[VISUALIZE_WGT], &Visualize::pose_request, this, &MainWindow::start_get_pose);
@@ -200,9 +200,11 @@ void MainWindow::on_button_connect_clicked()
 
 void MainWindow::on_button_start_clicked()
 {
-    robot.joints_num = cli.load_robot();
-    if (robot.joints_num >= 0)
+    if (cli.load_robot() >= 0)
+    {
+        download_robot_info();
         ui->label_robot->setText("SUCCESS on load robot");
+    }
     else
         ui->label_robot->setText("ERROR on load robot");
 }
@@ -221,29 +223,31 @@ void MainWindow::on_button_motor_clicked()
         ui->button_motor->setText("start motor");
 }
 
-void MainWindow::download_table()
+void MainWindow::download_robot_info()
 {
+    // @TODO: remove vlz to somewhere else
     RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
-    if (cli.download_table(robot.table) < 0)
+    if (cli.download_robot_info(robot.get_dh_table(), robot.get_joints_limits()) < 0)
     {
-        qDebug() << "ERROR on download table";
+        qDebug() << "ERROR on download robot info";
         return;
     }
 
-    rbt->rbt_table = robot.table;
+    rbt->rbt_table = robot.get_dh_table();
     rbt->set_table(rbt->rbt_table);
 
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
     vlz->update_joints_widget(rbt->rbt_table);
 }
 
-void MainWindow::upload_table()
+void MainWindow::upload_robot_info()
 {
+    // @FIXME:THis is not done.
     RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
     rbt->get_table(rbt->rbt_table);
-    if (cli.upload_table(rbt->rbt_table) < 0)
+    if (cli.upload_robot_info(rbt->rbt_table, robot.get_joints_limits()) < 0)
     {
-        qDebug() << "ERROR on upload table";
+        qDebug() << "ERROR on upload robot info";
         return;
     }
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
@@ -268,26 +272,26 @@ void MainWindow::start_get_joints(bool isShow)
 
 void MainWindow::update_pose()
 {
-    if (cli.get_current_pose(robot.pose) < 0)
+    if (cli.get_current_pose(robot.get_pose()) < 0)
     {
         qDebug() << "ERROR on update_pose";
         return;
     }
 
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
-        vlz->update_pose(robot.pose);
+        vlz->update_pose(robot.get_pose());
 }
 
 void MainWindow::update_joints()
 {
-    if (cli.get_current_joints(robot.joints) < 0)
+    if (cli.get_current_joints(robot.get_joints()) < 0)
     {
         qDebug() << "ERROR on update_joints";
         return;
     }
 
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
-        vlz->update_joints(robot.joints);
+        vlz->update_joints(robot.get_joints());
 }
 
 void MainWindow::send_target(Eigen::VectorXf target)
@@ -309,7 +313,7 @@ void MainWindow::send_mode(int mode)
     if (mode == 0)
     {
         TaskAssignment* tsk = (TaskAssignment*)widgets[TASKASSIGNMENT_WGT];
-        tsk->update_widget(joints_num);
+        tsk->update_widget(robot.get_joints_num());
     }
 }
 

@@ -34,6 +34,12 @@ struct dh_parametrs {
   std::string joint_name;
 };
 
+struct limits {
+  float min;
+  float max;
+};
+
+typedef std::vector<limits> joints_limits;
 typedef std::vector<dh_parametrs> dh_table;
 
 #endif // SHARETYPES_H

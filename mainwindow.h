@@ -36,8 +36,8 @@ private slots:
 
     void on_button_connect_clicked();
     void on_button_start_clicked();
-    void download_table();
-    void upload_table();
+    void download_robot_info();
+    void upload_robot_info();
     void start_get_pose(bool isShow);
     void start_get_joints(bool isShow);
     void update_pose();
@@ -62,7 +62,6 @@ private:
     UdpClient ucli;
     TcpClient cli;
     RobotInfo robot;
-    int joints_num = -1;
 
     const int margin_x = 30;
 };
