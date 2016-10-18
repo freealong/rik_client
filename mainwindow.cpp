@@ -227,11 +227,15 @@ void MainWindow::download_robot_info()
 {
     // @TODO: remove vlz to somewhere else
     RobotSettings* rbt = (RobotSettings*)widgets[RBTSETTINGS_WGT];
-    if (cli.download_robot_info(robot.get_dh_table(), robot.get_joints_limits()) < 0)
+    dh_table t;
+    joints_limits jl;
+    if (cli.download_robot_info(t, jl) < 0)
     {
         qDebug() << "ERROR on download robot info";
         return;
     }
+    robot.update_table(t);
+    robot.update_joints_limits(jl);
 
     rbt->rbt_table = robot.get_dh_table();
     rbt->set_table(rbt->rbt_table);
