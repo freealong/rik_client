@@ -19,11 +19,14 @@ public:
 
     void update_widget(int n);
     void update_joints(const Eigen::VectorXf& v);
+    void update_pose(const Eigen::VectorXf& v);
 
 signals:
-    void send_target_request(Eigen::VectorXf);
+    void send_target_joints_request(Eigen::VectorXf);
+    void send_target_pose_request(Eigen::VectorXf);
     void send_mode_request(int);
     void send_joints_request(bool);
+    void send_pose_request(bool);
 
 private slots:
     void on_set_mode_btn_clicked();
@@ -35,6 +38,8 @@ private slots:
     void on_test_btn_clicked();
 
     void on_show_joints_btn_clicked();
+
+    void on_show_pose_btn_clicked();
 
 private:
     Ui::TaskAssignment *ui;

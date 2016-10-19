@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab_joints">
     <attribute name="title">
@@ -155,6 +155,29 @@
      </property>
      <property name="text">
       <string>send target pose</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_actua_pose">
+     <property name="geometry">
+      <rect>
+       <x>51</x>
+       <y>100</y>
+       <width>241</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="show_pose_btn">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>100</y>
+       <width>121</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>show actual pose</string>
      </property>
     </widget>
    </widget>

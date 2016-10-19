@@ -78,7 +78,7 @@ int TcpClient::load_robot()
     else
     {
         load = true;
-        return atoi(msg.c_str());
+        return 0;
     }
 }
 
@@ -128,12 +128,23 @@ int TcpClient::get_current_joints(Eigen::VectorXf &v)
     return 0;
 }
 
-int TcpClient::send_target(Eigen::VectorXf &target)
+int TcpClient::send_target_joints(Eigen::VectorXf &target)
 {
     if (!is_robot_ready())
         return -1;
 
-    std::string msg("set target");
+    std::string msg("set target joints");
+    write(sockfd, msg);
+    write(sockfd, target);
+    return 0;
+}
+
+int TcpClient::send_target_pose(Eigen::VectorXf &target)
+{
+    if (!is_robot_ready())
+        return -1;
+
+    std::string msg("set target pose");
     write(sockfd, msg);
     write(sockfd, target);
     return 0;

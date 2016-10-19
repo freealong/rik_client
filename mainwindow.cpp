@@ -71,9 +71,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(jointsTimer, SIGNAL(timeout()), this, SLOT(update_joints()));
     connect((Visualize*)widgets[VISUALIZE_WGT], &Visualize::joints_request, this, &MainWindow::start_get_joints);
     // connect this and task
-    connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_target_request, this, &MainWindow::send_target);
+    connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_target_joints_request, this, &MainWindow::send_target_joints);
+    connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_target_pose_request, this, &MainWindow::send_target_pose);
     connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_mode_request, this, &MainWindow::send_mode);
     connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_joints_request, this, &MainWindow::start_get_joints);
+    connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_pose_request, this, &MainWindow::start_get_pose);
 //    ui->tableWidget->setColumnCount(6);
 //    ui->tableWidget->setRowCount(6);
 //    QTableWidgetItem* item = new QTableWidgetItem;
@@ -277,6 +279,7 @@ void MainWindow::start_get_joints(bool isShow)
 
 void MainWindow::update_pose()
 {
+    // @FIXME:
     Eigen::VectorXf p;
     if (cli.get_current_pose(p) < 0)
     {
@@ -287,10 +290,13 @@ void MainWindow::update_pose()
 
     Visualize* vlz = (Visualize*)widgets[VISUALIZE_WGT];
     vlz->update_pose(p);
+    TaskAssignment* tsk = (TaskAssignment*)widgets[TASKASSIGNMENT_WGT];
+    tsk->update_pose(p);
 }
 
 void MainWindow::update_joints()
 {
+    // @FIXME: same with update pose
     Eigen::VectorXf j;
     if (cli.get_current_joints(j) < 0)
     {
@@ -305,11 +311,20 @@ void MainWindow::update_joints()
     tsk->update_joints(j);
 }
 
-void MainWindow::send_target(Eigen::VectorXf target)
+void MainWindow::send_target_joints(Eigen::VectorXf target)
 {
-    if (cli.send_target(target) < 0)
+    if (cli.send_target_joints(target) < 0)
     {
-        qDebug() << "ERROR on send target";
+        qDebug() << "ERROR on send target joints";
+        return;
+    }
+}
+
+void MainWindow::send_target_pose(Eigen::VectorXf target)
+{
+    if (cli.send_target_pose(target) < 0)
+    {
+        qDebug() << "ERROR on send target pose";
         return;
     }
 }

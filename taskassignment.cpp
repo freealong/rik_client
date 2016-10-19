@@ -70,7 +70,7 @@ void TaskAssignment::on_send_joints_btn_clicked()
     for (int i = 0; i < size; ++i) {
         target(i) = ui->listWidget->item(i)->text().toFloat();
     }
-    emit send_target_request(target);
+    emit send_target_joints_request(target);
 }
 
 void TaskAssignment::on_send_pose_btn_clicked()
@@ -86,7 +86,7 @@ void TaskAssignment::on_send_pose_btn_clicked()
     {
         target(i) = target_list.at(i).toFloat();
     }
-    emit send_target_request(target);
+    emit send_target_pose_request(target);
 }
 
 
@@ -109,4 +109,24 @@ void TaskAssignment::update_joints(const Eigen::VectorXf &v)
     {
         ui->listWidget_actual_joints->item(i)->setText("joints " + QString::number(i) + ": " + QString::number(v(i)));
     }
+}
+
+void TaskAssignment::update_pose(const Eigen::VectorXf &v)
+{
+    if (!show_pose)
+        return;
+    QString s;
+    for (int i = 0; i < v.rows(); ++i)
+    {
+        s += QString::number(v(i));
+        if (i < v.rows() - 1)
+            s += ",";
+    }
+    ui->lineEdit_actua_pose->setText(s);
+}
+
+void TaskAssignment::on_show_pose_btn_clicked()
+{
+    show_pose = !show_pose;
+    emit send_pose_request(show_pose);
 }
