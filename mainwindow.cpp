@@ -202,13 +202,23 @@ void MainWindow::on_button_connect_clicked()
 
 void MainWindow::on_button_start_clicked()
 {
-    if (cli.load_robot() >= 0)
+    if (false && robot.is_initialized()) //@FIXME: release robot doesn't work now
     {
-        download_robot_info();
-        ui->label_robot->setText("SUCCESS on load robot");
+        cli.release_robot();
+        robot.clear();
+        ui->button_start->setText("start");
     }
     else
-        ui->label_robot->setText("ERROR on load robot");
+    {
+        if (cli.load_robot() >= 0)
+        {
+            download_robot_info();
+            ui->label_robot->setText("SUCCESS on load robot");
+//            ui->button_start->setText("stop");
+        }
+        else
+            ui->label_robot->setText("ERROR on load robot");
+    }
 }
 
 void MainWindow::on_button_motor_clicked()

@@ -13,6 +13,15 @@ public:
     void update_joints(const Eigen::VectorXf& j);
     void update_pose(const Eigen::VectorXf& p);
     void print_info(void);
+    bool is_initialized() {
+        return joints_num >= 0;
+    }
+    void clear() {
+        joints_num = -1;
+        table.clear();
+        limit.clear();
+    }
+
     int get_joints_num()
     {
         return joints_num;

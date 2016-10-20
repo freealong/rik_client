@@ -82,6 +82,17 @@ int TcpClient::load_robot()
     }
 }
 
+int TcpClient::release_robot()
+{
+    if (!is_connected())
+        return -1;
+
+    std::string msg("release robot");
+    write(sockfd, msg);
+    sleep(1);
+    return 0;
+}
+
 int TcpClient::download_robot_info(dh_table &t, joints_limits &jl)
 {
     if (!is_robot_ready())

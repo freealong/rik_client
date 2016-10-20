@@ -31,6 +31,7 @@ public:
     void disconnect_server();
     int send_msg(std::string msg);
     int load_robot();
+    int release_robot();
     int download_robot_info(dh_table& t, joints_limits& jl);
     int upload_robot_info(dh_table& t, joints_limits& jl);
     int get_current_pose(Eigen::VectorXf &v);
