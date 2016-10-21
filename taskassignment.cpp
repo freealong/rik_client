@@ -10,12 +10,23 @@ TaskAssignment::TaskAssignment(QWidget *parent) :
     show_pose(false)
 {
     ui->setupUi(this);
+    ui->tab_joints->setDisabled(true);
     ui->tab_pose->setDisabled(true);
 }
 
 TaskAssignment::~TaskAssignment()
 {
     delete ui;
+}
+
+void TaskAssignment::reset()
+{
+    ui->lineEdit->clear();
+    ui->lineEdit_actua_pose->clear();
+    ui->listWidget->clear();
+    ui->listWidget_actual_joints->clear();
+    ui->tab_joints->setDisabled(true);
+    ui->tab_pose->setDisabled(true);
 }
 
 void TaskAssignment::update_widget(int n)
@@ -92,7 +103,7 @@ void TaskAssignment::on_send_pose_btn_clicked()
 
 void TaskAssignment::on_test_btn_clicked()
 {
-    update_widget(6);
+    reset();
 }
 
 void TaskAssignment::on_show_joints_btn_clicked()

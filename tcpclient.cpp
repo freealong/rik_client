@@ -88,6 +88,7 @@ int TcpClient::release_robot()
         return -1;
 
     std::string msg("release robot");
+    sleep(0.1);
     write(sockfd, msg);
     sleep(1);
     return 0;

@@ -15,6 +15,12 @@ RobotSettings::~RobotSettings()
     delete ui;
 }
 
+void RobotSettings::reset()
+{
+    rbt_table.clear();
+    ui->tableWidget->clear();
+}
+
 void RobotSettings::set_table(dh_table &t)
 {
     // set table in table widget

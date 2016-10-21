@@ -19,6 +19,7 @@ public:
     explicit Visualize(QWidget *parent = 0);
     ~Visualize();
 
+    void reset();
     void update_pose(Eigen::VectorXf &v);
     void update_joints(Eigen::VectorXf &v);
     void update_joints_widget(dh_table& t);

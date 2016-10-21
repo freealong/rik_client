@@ -65,6 +65,13 @@ Visualize::~Visualize()
     delete ui;
 }
 
+void Visualize::reset()
+{
+    ui->list_joints->clear();
+    plot_joints->clearGraphs();
+    plot_pose->clearGraphs();
+}
+
 void Visualize::update_pose(Eigen::VectorXf &v)
 {
     if(!show_pose) return;

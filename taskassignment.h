@@ -17,6 +17,7 @@ public:
     explicit TaskAssignment(QWidget *parent = 0);
     ~TaskAssignment();
 
+    void reset();
     void update_widget(int n);
     void update_joints(const Eigen::VectorXf& v);
     void update_pose(const Eigen::VectorXf& v);

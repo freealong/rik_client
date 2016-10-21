@@ -202,11 +202,15 @@ void MainWindow::on_button_connect_clicked()
 
 void MainWindow::on_button_start_clicked()
 {
-    if (false && robot.is_initialized()) //@FIXME: release robot doesn't work now
+    if (robot.is_initialized())
     {
         cli.release_robot();
         robot.clear();
         ui->button_start->setText("start");
+        ui->label_robot->setText("Not started ...");
+        ((RobotSettings*)widgets[RBTSETTINGS_WGT])->reset();
+        ((Visualize*)widgets[VISUALIZE_WGT])->reset();
+        ((TaskAssignment*)widgets[TASKASSIGNMENT_WGT])->reset();
     }
     else
     {
@@ -214,7 +218,7 @@ void MainWindow::on_button_start_clicked()
         {
             download_robot_info();
             ui->label_robot->setText("SUCCESS on load robot");
-//            ui->button_start->setText("stop");
+            ui->button_start->setText("stop");
         }
         else
             ui->label_robot->setText("ERROR on load robot");

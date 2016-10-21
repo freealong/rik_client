@@ -16,6 +16,7 @@ class RobotSettings : public MyWidget
 public:
     explicit RobotSettings(QWidget *parent = 0);
     ~RobotSettings();
+    void reset();
     void set_table(dh_table &t);
     void get_table(dh_table &t);
     dh_table rbt_table;
