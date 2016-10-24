@@ -23,8 +23,7 @@ public:
     void update_pose(const Eigen::VectorXf& v);
 
 signals:
-    void send_target_joints_request(Eigen::VectorXf);
-    void send_target_pose_request(Eigen::VectorXf);
+    void send_target_request(Eigen::VectorXf, int);
     void send_mode_request(int);
     void send_joints_request(bool);
     void send_pose_request(bool);
@@ -35,6 +34,8 @@ private slots:
     void on_send_joints_btn_clicked();
 
     void on_send_pose_btn_clicked();
+
+    void on_send_path_btn_clicked();
 
     void on_test_btn_clicked();
 

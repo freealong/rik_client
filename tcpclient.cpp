@@ -140,6 +140,27 @@ int TcpClient::get_current_joints(Eigen::VectorXf &v)
     return 0;
 }
 
+int TcpClient::send_target(Eigen::VectorXf &target, int mode)
+{
+    int res;
+    switch(mode)
+    {
+    case 0:
+        res = send_target_joints(target);
+        break;
+    case 1:
+        res = send_target_pose(target);
+        break;
+    case 2:
+        res = send_target_path(target);
+        break;
+    default:
+        res = -1;
+        break;
+    }
+    return res;
+}
+
 int TcpClient::send_target_joints(Eigen::VectorXf &target)
 {
     if (!is_robot_ready())
@@ -157,6 +178,17 @@ int TcpClient::send_target_pose(Eigen::VectorXf &target)
         return -1;
 
     std::string msg("set target pose");
+    write(sockfd, msg);
+    write(sockfd, target);
+    return 0;
+}
+
+int TcpClient::send_target_path(Eigen::VectorXf &target)
+{
+    if (!is_robot_ready())
+        return -1;
+
+    std::string msg("set task path");
     write(sockfd, msg);
     write(sockfd, target);
     return 0;

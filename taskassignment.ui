@@ -17,13 +17,13 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>60</y>
+     <y>50</y>
      <width>601</width>
-     <height>241</height>
+     <height>201</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab_joints">
     <attribute name="title">
@@ -45,8 +45,8 @@
     <widget class="QListWidget" name="listWidget">
      <property name="geometry">
       <rect>
-       <x>190</x>
-       <y>60</y>
+       <x>130</x>
+       <y>40</y>
        <width>90</width>
        <height>120</height>
       </rect>
@@ -56,25 +56,6 @@
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
-     </property>
-    </widget>
-    <widget class="QListWidget" name="listWidget_actual_joints">
-     <property name="geometry">
-      <rect>
-       <x>79</x>
-       <y>60</y>
-       <width>111</width>
-       <height>120</height>
-      </rect>
-     </property>
-     <property name="autoFillBackground">
-      <bool>true</bool>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
      </property>
     </widget>
     <widget class="QPushButton" name="test_btn">
@@ -90,43 +71,17 @@
       <string>test</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>40</y>
-       <width>81</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>actual joints</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>180</x>
-       <y>40</y>
+       <x>130</x>
+       <y>20</y>
        <width>81</width>
        <height>16</height>
       </rect>
      </property>
      <property name="text">
       <string>target joints</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="show_joints_btn">
-     <property name="geometry">
-      <rect>
-       <x>350</x>
-       <y>140</y>
-       <width>121</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>show actual joints</string>
      </property>
     </widget>
    </widget>
@@ -157,27 +112,35 @@
       <string>send target pose</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_actua_pose">
+   </widget>
+   <widget class="QWidget" name="tab_path">
+    <attribute name="title">
+     <string>path mode</string>
+    </attribute>
+    <widget class="QLineEdit" name="target_path_LineEdit">
      <property name="geometry">
       <rect>
-       <x>51</x>
-       <y>100</y>
+       <x>61</x>
+       <y>50</y>
        <width>241</width>
        <height>23</height>
       </rect>
      </property>
+     <property name="text">
+      <string/>
+     </property>
     </widget>
-    <widget class="QPushButton" name="show_pose_btn">
+    <widget class="QPushButton" name="send_path_btn">
      <property name="geometry">
       <rect>
-       <x>360</x>
-       <y>100</y>
+       <x>370</x>
+       <y>50</y>
        <width>121</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
-      <string>show actual pose</string>
+      <string>send target path</string>
      </property>
     </widget>
    </widget>
@@ -201,6 +164,11 @@
      <string>pose mode</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>task mode</string>
+    </property>
+   </item>
   </widget>
   <widget class="QPushButton" name="set_mode_btn">
    <property name="geometry">
@@ -213,6 +181,52 @@
    </property>
    <property name="text">
     <string>set mode</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="actual_pose_LineEdit">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>290</y>
+     <width>241</width>
+     <height>23</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="show_pose_btn">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>290</y>
+     <width>121</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>show actual pose</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="show_joints_btn">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>260</y>
+     <width>121</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>show actual joints</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="actual_joint_LineEdit">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>260</y>
+     <width>241</width>
+     <height>23</height>
+    </rect>
    </property>
   </widget>
  </widget>

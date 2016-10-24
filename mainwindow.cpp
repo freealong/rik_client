@@ -71,8 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(jointsTimer, SIGNAL(timeout()), this, SLOT(update_joints()));
     connect((Visualize*)widgets[VISUALIZE_WGT], &Visualize::joints_request, this, &MainWindow::start_get_joints);
     // connect this and task
-    connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_target_joints_request, this, &MainWindow::send_target_joints);
-    connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_target_pose_request, this, &MainWindow::send_target_pose);
+    connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_target_request, this, &MainWindow::send_target);
     connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_mode_request, this, &MainWindow::send_mode);
     connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_joints_request, this, &MainWindow::start_get_joints);
     connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_pose_request, this, &MainWindow::start_get_pose);
@@ -278,7 +277,7 @@ void MainWindow::upload_robot_info()
 void MainWindow::start_get_pose(bool isShow)
 {
     if (isShow)
-        poseTimer->start(100);
+        poseTimer->start(1000);
     else
         poseTimer->stop();
 }
@@ -286,7 +285,7 @@ void MainWindow::start_get_pose(bool isShow)
 void MainWindow::start_get_joints(bool isShow)
 {
     if (isShow)
-        jointsTimer->start(100);
+        jointsTimer->start(1000);
     else
         jointsTimer->stop();
 }
@@ -325,20 +324,11 @@ void MainWindow::update_joints()
     tsk->update_joints(j);
 }
 
-void MainWindow::send_target_joints(Eigen::VectorXf target)
+void MainWindow::send_target(Eigen::VectorXf target, int mode)
 {
-    if (cli.send_target_joints(target) < 0)
+    if (cli.send_target(target, mode) < 0)
     {
-        qDebug() << "ERROR on send target joints";
-        return;
-    }
-}
-
-void MainWindow::send_target_pose(Eigen::VectorXf target)
-{
-    if (cli.send_target_pose(target) < 0)
-    {
-        qDebug() << "ERROR on send target pose";
+        qDebug() << "ERROR on send target";
         return;
     }
 }

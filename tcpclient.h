@@ -36,8 +36,10 @@ public:
     int upload_robot_info(dh_table& t, joints_limits& jl);
     int get_current_pose(Eigen::VectorXf &v);
     int get_current_joints(Eigen::VectorXf &v);
+    int send_target(Eigen::VectorXf &target, int mode);
     int send_target_joints(Eigen::VectorXf &target);
     int send_target_pose(Eigen::VectorXf &target);
+    int send_target_path(Eigen::VectorXf &target);
     int send_mode(int mode);
     void test();
 

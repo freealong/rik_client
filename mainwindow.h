@@ -42,8 +42,7 @@ private slots:
     void start_get_joints(bool isShow);
     void update_pose();
     void update_joints();
-    void send_target_joints(Eigen::VectorXf target);
-    void send_target_pose(Eigen::VectorXf target);
+    void send_target(Eigen::VectorXf target, int mode);
     void send_mode(int mode);
 
     void on_button_test_clicked();
