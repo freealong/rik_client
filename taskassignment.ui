@@ -143,6 +143,26 @@
       <string>send target path</string>
      </property>
     </widget>
+    <widget class="QComboBox" name="path_type_cm">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>20</y>
+       <width>231</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>line path</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>arc path</string>
+      </property>
+     </item>
+    </widget>
    </widget>
   </widget>
   <widget class="QComboBox" name="comboBox">

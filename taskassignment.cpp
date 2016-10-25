@@ -111,14 +111,28 @@ void TaskAssignment::on_send_pose_btn_clicked()
 
 void TaskAssignment::on_send_path_btn_clicked()
 {
-    Eigen::VectorXf target(7);
-    QStringList target_list = ui->target_path_LineEdit->text().split(",");
-    if (target_list.size() < 7)
+    int type = ui->path_type_cm->currentIndex();
+    int target_sz;
+    switch (type)
     {
-        qDebug()<<"target has 7 element and seperate by ,";
+    case 0:
+        target_sz = 7;
+        break;
+    case 1:
+        target_sz = 14;
+        break;
+    default:
+        target_sz = 7;
+        break;
+    }
+    Eigen::VectorXf target(target_sz);
+    QStringList target_list = ui->target_path_LineEdit->text().split(",");
+    if (target_list.size() < target_sz)
+    {
+        qDebug()<<"target has " << target_sz << " element and seperate by ,";
         return;
     }
-    for (int i = 0; i < 7; ++i)
+    for (int i = 0; i < target_sz; ++i)
     {
         target(i) = target_list.at(i).toFloat();
     }
