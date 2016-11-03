@@ -44,6 +44,7 @@ private slots:
     void update_joints();
     void send_target(Eigen::VectorXf target, int mode);
     void send_mode(int mode);
+    void send_increasing_mode(bool running, int mode, int num, float speed);
 
     void on_button_test_clicked();
 

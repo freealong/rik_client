@@ -75,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_mode_request, this, &MainWindow::send_mode);
     connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_joints_request, this, &MainWindow::start_get_joints);
     connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_pose_request, this, &MainWindow::start_get_pose);
+    connect((TaskAssignment*)widgets[TASKASSIGNMENT_WGT], &TaskAssignment::send_increasing_request, this, &MainWindow::send_increasing_mode);
 //    ui->tableWidget->setColumnCount(6);
 //    ui->tableWidget->setRowCount(6);
 //    QTableWidgetItem* item = new QTableWidgetItem;
@@ -345,6 +346,11 @@ void MainWindow::send_mode(int mode)
         TaskAssignment* tsk = (TaskAssignment*)widgets[TASKASSIGNMENT_WGT];
         tsk->update_widget(robot.get_joints_num());
     }
+}
+
+void MainWindow::send_increasing_mode(bool running, int mode, int num, float speed)
+{
+    cli.send_increasing_mode(running, mode, num, speed);
 }
 
 void MainWindow::on_button_test_clicked()

@@ -205,6 +205,20 @@ int TcpClient::send_mode(int mode)
     return 0;
 }
 
+int TcpClient::send_increasing_mode(bool running, int mode, int num, float speed)
+{
+    if (!is_robot_ready())
+        return -1;
+
+    std::string msg("set increasing state");
+    write(sockfd, msg);
+    write(sockfd, &running, sizeof(running));
+    write(sockfd, &mode, sizeof(mode));
+    write(sockfd, &num, sizeof(num));
+    write(sockfd, &speed, sizeof(speed));
+    return 0;
+}
+
 void TcpClient::test()
 {
     std::string msg("test");

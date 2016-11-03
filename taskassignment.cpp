@@ -7,12 +7,54 @@ TaskAssignment::TaskAssignment(QWidget *parent) :
     MyWidget(parent),
     ui(new Ui::TaskAssignment),
     show_joints(false),
-    show_pose(false)
+    show_pose(false),
+    mode(-1),
+    pressed_btn_id(-1)
 {
     ui->setupUi(this);
     ui->tab_joints->setDisabled(true);
     ui->tab_pose->setDisabled(true);
-//    ui->tab_path->setDisabled(true);
+    ui->tab_path->setDisabled(true);
+
+    // set up pose mode widget
+    for (int i = 0; i < 6; i++)
+    {
+        QPushButton* btn_minus = new QPushButton("-");
+        QPushButton* btn_plus = new QPushButton("+");
+        connect(btn_minus, &QPushButton::pressed, this, &TaskAssignment::on_increasing_btn_pressed);
+        connect(btn_minus, &QPushButton::released, this, &TaskAssignment::on_increasing_btn_released);
+        connect(btn_plus, &QPushButton::pressed, this, &TaskAssignment::on_increasing_btn_pressed);
+        connect(btn_plus, &QPushButton::released, this, &TaskAssignment::on_increasing_btn_released);
+        ui->pose_minus_vl->addWidget(btn_minus);
+        ui->pose_plus_vl->addWidget(btn_plus);
+    }
+
+    // set up path mode widget
+    for (int i = 0; i < 6; i++)
+    {
+        QLineEdit* target_le = new QLineEdit();
+        ui->target_pose_vl->addWidget(target_le);
+        if (ui->path_type_cm->currentText() == QString("arc path"))
+        {
+            QLineEdit* middle_le = new QLineEdit();
+            ui->middle_pose_vl->addWidget(middle_le);
+        }
+    }
+
+    QLabel* name = new QLabel("Time:");
+    ui->speed_vl->addWidget(name);
+    QLineEdit* speed_le = new QLineEdit();
+    ui->speed_vl->addWidget(speed_le);
+    if (ui->path_type_cm->currentText() == QString("arc path"))
+    {
+        name->setText("speed:");
+        QLabel* acc_label = new QLabel("acc:");
+        ui->speed_vl->addWidget(acc_label);
+        QLineEdit* acc_le = new QLineEdit();
+        ui->speed_vl->addWidget(acc_le);
+    }
+
+    connect(ui->path_type_cm, SIGNAL(currentIndexChanged(int)), this, SLOT(on_path_type_changed()));
 }
 
 TaskAssignment::~TaskAssignment()
@@ -22,11 +64,16 @@ TaskAssignment::~TaskAssignment()
 
 void TaskAssignment::reset()
 {
-    ui->lineEdit->clear();
-    ui->listWidget->clear();
-    ui->actual_joint_LineEdit->clear();
-    ui->actual_pose_LineEdit->clear();
-    ui->target_path_LineEdit->clear();
+//    ui->lineEdit_x->clear();
+//    ui->lineEdit_y->clear();
+//    ui->lineEdit_z->clear();
+//    ui->lineEdit_a->clear();
+//    ui->lineEdit_b->clear();
+//    ui->lineEdit_c->clear();
+//    ui->listWidget->clear();
+//    ui->actual_joint_LineEdit->clear();
+//    ui->actual_pose_LineEdit->clear();
+//    ui->target_path_LineEdit->clear();
     ui->tab_joints->setDisabled(true);
     ui->tab_pose->setDisabled(true);
     ui->tab_path->setDisabled(true);
@@ -34,29 +81,46 @@ void TaskAssignment::reset()
 
 void TaskAssignment::update_widget(int n)
 {
-    int size = ui->listWidget->count();
-    if (size == n)
-        return;
-    else if (size > n)
+    // set up joints mode widget
+    int s = ui->joints_name_vl->count();
+    if (s > n)
     {
-        for (int i = size-1; i > n-1; --i)
+        QLayoutItem *item;
+        for (int i = s-1; i > n-1; --i)
         {
-            ui->listWidget->takeItem(i);
+            item = ui->joints_name_vl->takeAt(i);
+            delete item->widget();
+            item = ui->joints_value_vl->takeAt(i);
+            delete item->widget();
+            item = ui->joints_minus_vl->takeAt(i);
+            delete item->widget();
+            item = ui->joints_plus_vl->takeAt(i);
+            delete item->widget();
         }
     }
-    else
+    else if (s < n)
     {
-        for (int i = size; i < n; ++i)
+        for (int i = s; i < n; ++i)
         {
-            ui->listWidget->addItem("0");
-            ui->listWidget->openPersistentEditor(ui->listWidget->item(i));
+            QLabel* name = new QLabel("joint "+QString::number(i));
+            ui->joints_name_vl->addWidget(name);
+            QLineEdit* value = new QLineEdit();
+            ui->joints_value_vl->addWidget(value);
+            QPushButton* btn_minus = new QPushButton("-");
+            QPushButton* btn_plus = new QPushButton("+");
+            connect(btn_minus, &QPushButton::pressed, this, &TaskAssignment::on_increasing_btn_pressed);
+            connect(btn_minus, &QPushButton::released, this, &TaskAssignment::on_increasing_btn_released);
+            connect(btn_plus, &QPushButton::pressed, this, &TaskAssignment::on_increasing_btn_pressed);
+            connect(btn_plus, &QPushButton::released, this, &TaskAssignment::on_increasing_btn_released);
+            ui->joints_minus_vl->addWidget(btn_minus);
+            ui->joints_plus_vl->addWidget(btn_plus);
         }
     }
 }
 
 void TaskAssignment::on_set_mode_btn_clicked()
 {
-    int mode = ui->comboBox->currentIndex();
+    mode = ui->comboBox->currentIndex();
     ui->tabWidget->setCurrentIndex(mode);
     switch (mode)
     {
@@ -85,10 +149,10 @@ void TaskAssignment::on_set_mode_btn_clicked()
 
 void TaskAssignment::on_send_joints_btn_clicked()
 {
-    int size = ui->listWidget->count();
+    int size = ui->joints_name_vl->count();
     Eigen::VectorXf target(size);
     for (int i = 0; i < size; ++i) {
-        target(i) = ui->listWidget->item(i)->text().toFloat();
+        target(i) = ((QLineEdit*)(ui->joints_value_vl->itemAt(i)->widget()))->text().toFloat();
     }
     emit send_target_request(target, 0);
 }
@@ -96,52 +160,47 @@ void TaskAssignment::on_send_joints_btn_clicked()
 void TaskAssignment::on_send_pose_btn_clicked()
 {
     Eigen::VectorXf target(6);
-    QStringList target_list = ui->lineEdit->text().split(",");
-    if (target_list.size() < 6)
-    {
-        qDebug()<<"target has 6 element and seperate by ,";
-        return;
-    }
-    for (int i = 0; i < 6; ++i)
-    {
-        target(i) = target_list.at(i).toFloat();
-    }
+    target(0) = ui->lineEdit_x->text().toFloat();
+    target(1) = ui->lineEdit_y->text().toFloat();
+    target(2) = ui->lineEdit_z->text().toFloat();
+    target(3) = ui->lineEdit_a->text().toFloat();
+    target(4) = ui->lineEdit_b->text().toFloat();
+    target(5) = ui->lineEdit_c->text().toFloat();
+
     emit send_target_request(target, 1);
 }
 
 void TaskAssignment::on_send_path_btn_clicked()
 {
-    int type = ui->path_type_cm->currentIndex();
-    int target_sz;
-    switch (type)
-    {
-    case 0:
+    int target_sz = 0;
+    if (ui->path_type_cm->currentText() == QString("line path"))
         target_sz = 7;
-        break;
-    case 1:
+    else if (ui->path_type_cm->currentText() == QString("arc path"))
         target_sz = 14;
-        break;
-    default:
-        target_sz = 7;
-        break;
-    }
     Eigen::VectorXf target(target_sz);
-    QStringList target_list = ui->target_path_LineEdit->text().split(",");
-    if (target_list.size() < target_sz)
+
+    if (target_sz == 7)
     {
-        qDebug()<<"target has " << target_sz << " element and seperate by ,";
-        return;
+        for (int i = 0; i < 6; ++i)
+            target(i) = ((QLineEdit*)(ui->target_pose_vl->itemAt(i)->widget()))->text().toFloat();
+        target(6) = ((QLineEdit*)(ui->speed_vl->itemAt(1)->widget()))->text().toFloat();
     }
-    for (int i = 0; i < target_sz; ++i)
+    else if (target_sz == 14)
     {
-        target(i) = target_list.at(i).toFloat();
+        for (int i = 0; i < 6; ++i)
+        {
+            target(i) = ((QLineEdit*)(ui->target_pose_vl->itemAt(i)->widget()))->text().toFloat();
+            target(i+6) = ((QLineEdit*)(ui->middle_pose_vl->itemAt(i)->widget()))->text().toFloat();
+        }
+        target(12) = ((QLineEdit*)(ui->speed_vl->itemAt(1)->widget()))->text().toFloat();
+        target(13) = ((QLineEdit*)(ui->speed_vl->itemAt(3)->widget()))->text().toFloat();
     }
     emit send_target_request(target, 2);
 }
 
 void TaskAssignment::on_test_btn_clicked()
 {
-    reset();
+    update_widget(6);
 }
 
 void TaskAssignment::on_show_joints_btn_clicked()
@@ -184,3 +243,76 @@ void TaskAssignment::on_show_pose_btn_clicked()
     emit send_pose_request(show_pose);
 }
 
+void TaskAssignment::on_increasing_btn_pressed()
+{
+    bool is_minus_down;
+    bool is_plus_down;
+    for (int i = 0; i < ui->joints_minus_vl->count(); ++i)
+    {
+        is_minus_down = ((QPushButton*)(ui->joints_minus_vl->itemAt(i)->widget()))->isDown() ||
+                 ((QPushButton*)(ui->pose_minus_vl->itemAt(i)->widget()))->isDown();
+        is_plus_down = ((QPushButton*)(ui->joints_plus_vl->itemAt(i)->widget()))->isDown() ||
+                 ((QPushButton*)(ui->pose_plus_vl->itemAt(i)->widget()))->isDown();
+        if (is_minus_down)
+        {
+            pressed_btn_id = i;
+            qDebug() << "mode: " << mode << ", decreasing " << i;
+            emit send_increasing_request(true, mode, i, -0.1);
+            break;
+        }
+        if (is_plus_down)
+        {
+            pressed_btn_id = i;
+            qDebug() << "mode: " << mode << ", increasing " << i;
+            emit send_increasing_request(true, mode, i, 0.1);
+            break;
+        }
+    }
+}
+
+void TaskAssignment::on_increasing_btn_released()
+{
+    if (pressed_btn_id != -1)
+    {
+        if (mode == 0)
+            emit send_increasing_request(false, 0, pressed_btn_id, 0);
+        else if (mode == 1)
+            emit send_increasing_request(false, 1, pressed_btn_id, 0);
+        qDebug() << "stop mode " << mode << ", id: " << pressed_btn_id;
+        pressed_btn_id = -1;
+    }
+}
+
+void TaskAssignment::on_path_type_changed()
+{
+    if (ui->path_type_cm->currentText() == QString("line path"))
+    {
+        QLayoutItem* child;
+        while(ui->middle_pose_vl->count()!=0)
+        {
+            child = ui->middle_pose_vl->takeAt(0);
+            delete child->widget();
+            delete child;
+        }
+        child = ui->speed_vl->takeAt(3);
+        delete child->widget();
+        delete child;
+        child = ui->speed_vl->takeAt(2);
+        delete child->widget();
+        delete child;
+        ((QLabel*)(ui->speed_vl->itemAt(0)->widget()))->setText("time:");
+    }
+    else if (ui->path_type_cm->currentText() == QString("arc path"))
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            QLineEdit* middle_le = new QLineEdit();
+            ui->middle_pose_vl->addWidget(middle_le);
+        }
+        QLabel* acc_label = new QLabel("acc:");
+        ui->speed_vl->addWidget(acc_label);
+        QLineEdit* acc_le = new QLineEdit();
+        ui->speed_vl->addWidget(acc_le);
+        ((QLabel*)(ui->speed_vl->itemAt(0)->widget()))->setText("speed:");
+    }
+}

@@ -18,12 +18,12 @@
     <rect>
      <x>30</x>
      <y>50</y>
-     <width>601</width>
+     <width>571</width>
      <height>201</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab_joints">
     <attribute name="title">
@@ -32,8 +32,8 @@
     <widget class="QPushButton" name="send_joints_btn">
      <property name="geometry">
       <rect>
-       <x>350</x>
-       <y>100</y>
+       <x>330</x>
+       <y>70</y>
        <width>121</width>
        <height>23</height>
       </rect>
@@ -42,27 +42,11 @@
       <string>send target joints</string>
      </property>
     </widget>
-    <widget class="QListWidget" name="listWidget">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>40</y>
-       <width>90</width>
-       <height>120</height>
-      </rect>
-     </property>
-     <property name="autoFillBackground">
-      <bool>true</bool>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-    </widget>
     <widget class="QPushButton" name="test_btn">
      <property name="geometry">
       <rect>
-       <x>360</x>
-       <y>50</y>
+       <x>480</x>
+       <y>150</y>
        <width>80</width>
        <height>23</height>
       </rect>
@@ -71,38 +55,39 @@
       <string>test</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>130</x>
-       <y>20</y>
-       <width>81</width>
-       <height>16</height>
+       <x>0</x>
+       <y>0</y>
+       <width>261</width>
+       <height>171</height>
       </rect>
      </property>
-     <property name="text">
-      <string>target joints</string>
-     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <layout class="QVBoxLayout" name="joints_name_vl"/>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="joints_value_vl"/>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="joints_minus_vl"/>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="joints_plus_vl"/>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_pose">
     <attribute name="title">
      <string>pose mode</string>
     </attribute>
-    <widget class="QLineEdit" name="lineEdit">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>50</y>
-       <width>241</width>
-       <height>23</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QPushButton" name="send_pose_btn">
      <property name="geometry">
       <rect>
-       <x>359</x>
+       <x>410</x>
        <y>50</y>
        <width>121</width>
        <height>23</height>
@@ -112,24 +97,127 @@
       <string>send target pose</string>
      </property>
     </widget>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>341</width>
+       <height>172</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>x</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>y</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>z</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>a</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>b</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_7">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>c</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QLineEdit" name="lineEdit_y"/>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_x"/>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_z"/>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_c"/>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_a"/>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_b"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="pose_minus_vl"/>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="pose_plus_vl"/>
+      </item>
+     </layout>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_path">
     <attribute name="title">
      <string>path mode</string>
     </attribute>
-    <widget class="QLineEdit" name="target_path_LineEdit">
-     <property name="geometry">
-      <rect>
-       <x>61</x>
-       <y>50</y>
-       <width>241</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
     <widget class="QPushButton" name="send_path_btn">
      <property name="geometry">
       <rect>
@@ -146,9 +234,9 @@
     <widget class="QComboBox" name="path_type_cm">
      <property name="geometry">
       <rect>
-       <x>60</x>
+       <x>370</x>
        <y>20</y>
-       <width>231</width>
+       <width>121</width>
        <height>23</height>
       </rect>
      </property>
@@ -162,6 +250,103 @@
        <string>arc path</string>
       </property>
      </item>
+    </widget>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>251</width>
+       <height>171</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>x</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_9">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>y</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_10">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>z</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_11">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>a</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>b</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_12">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>c</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="target_pose_vl"/>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="middle_pose_vl"/>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="speed_vl"/>
+      </item>
+     </layout>
     </widget>
    </widget>
   </widget>
