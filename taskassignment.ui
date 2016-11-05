@@ -186,22 +186,22 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QLineEdit" name="lineEdit_y"/>
-        </item>
-        <item>
          <widget class="QLineEdit" name="lineEdit_x"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_z"/>
+         <widget class="QLineEdit" name="lineEdit_y"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_c"/>
+         <widget class="QLineEdit" name="lineEdit_z"/>
         </item>
         <item>
          <widget class="QLineEdit" name="lineEdit_a"/>
         </item>
         <item>
          <widget class="QLineEdit" name="lineEdit_b"/>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_c"/>
         </item>
        </layout>
       </item>
