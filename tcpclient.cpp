@@ -219,11 +219,20 @@ int TcpClient::send_increasing_mode(bool running, int mode, int num, float speed
     return 0;
 }
 
-void TcpClient::test()
+int TcpClient::set_motor(Eigen::VectorXf t)
 {
-    std::string msg("test");
+    if (!is_robot_ready())
+        return -1;
+
+    std::string msg("set motor max speed");
     write(sockfd, msg);
-    Eigen::VectorXf des;
-    read(sockfd, des);
-    qDebug() << des(5);
+    write(sockfd, t);
+    return 0;
+}
+
+void TcpClient::test(int mode)
+{
+    std::string msg("set task path mode");
+    write(sockfd, msg);
+    write(sockfd, &mode, sizeof(mode));
 }

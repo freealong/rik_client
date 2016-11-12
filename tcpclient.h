@@ -42,7 +42,8 @@ public:
     int send_target_path(Eigen::VectorXf &target);
     int send_mode(int mode);
     int send_increasing_mode(bool running, int mode, int num, float speed);
-    void test();
+    int set_motor(Eigen::VectorXf);
+    void test(int);
 
 
 private:

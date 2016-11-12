@@ -52,6 +52,10 @@ private slots:
 
     void on_button_print_clicked();
 
+    void on_button_test_2_clicked();
+
+    void on_button_test_3_clicked();
+
 private:
     Ui::MainWindow *ui;
 

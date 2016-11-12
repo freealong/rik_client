@@ -355,10 +355,26 @@ void MainWindow::send_increasing_mode(bool running, int mode, int num, float spe
 
 void MainWindow::on_button_test_clicked()
 {
-    cli.test();
+    cli.test(ui->lineEdit_test->text().toInt());
 }
 
 void MainWindow::on_button_print_clicked()
 {
    robot.print_info();
+}
+
+void MainWindow::on_button_test_2_clicked()
+{
+    QStringList sl = ui->lineEdit_motor->text().split(",");
+    Eigen::VectorXf t(6);
+    for (int i = 0; i < 6; i++)
+    {
+        t(i) = sl.at(i).toFloat();
+    }
+    cli.set_motor(t);
+}
+
+void MainWindow::on_button_test_3_clicked()
+{
+    cli.send_msg("set task");
 }

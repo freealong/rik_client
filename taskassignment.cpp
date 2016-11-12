@@ -247,24 +247,25 @@ void TaskAssignment::on_increasing_btn_pressed()
 {
     bool is_minus_down;
     bool is_plus_down;
-    for (int i = 0; i < ui->joints_minus_vl->count(); ++i)
+    int count = mode == 0 ? ui->joints_minus_vl->count() : ui->pose_minus_vl->count();
+    for (int i = 0; i < count; ++i)
     {
-        is_minus_down = ((QPushButton*)(ui->joints_minus_vl->itemAt(i)->widget()))->isDown() ||
+        is_minus_down = mode == 0 ? ((QPushButton*)(ui->joints_minus_vl->itemAt(i)->widget()))->isDown() :
                  ((QPushButton*)(ui->pose_minus_vl->itemAt(i)->widget()))->isDown();
-        is_plus_down = ((QPushButton*)(ui->joints_plus_vl->itemAt(i)->widget()))->isDown() ||
+        is_plus_down = mode == 0 ? ((QPushButton*)(ui->joints_plus_vl->itemAt(i)->widget()))->isDown() :
                  ((QPushButton*)(ui->pose_plus_vl->itemAt(i)->widget()))->isDown();
         if (is_minus_down)
         {
             pressed_btn_id = i;
             qDebug() << "mode: " << mode << ", decreasing " << i;
-            emit send_increasing_request(true, mode, i, -0.1);
+            emit send_increasing_request(true, mode, i, -1);
             break;
         }
         if (is_plus_down)
         {
             pressed_btn_id = i;
             qDebug() << "mode: " << mode << ", increasing " << i;
-            emit send_increasing_request(true, mode, i, 0.1);
+            emit send_increasing_request(true, mode, i, 1);
             break;
         }
     }
